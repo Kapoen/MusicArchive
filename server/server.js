@@ -1,0 +1,33 @@
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+
+const app = express();
+
+import indexRouter from "./routes/index.js";
+
+const corsOptions = {
+    // If you change the port number of the frontend, you need to change it here as well.
+    origin: "http://localhost:5173",
+};
+
+// CORS provides a mechanism for securing cross-origin requests
+// (i.e. requests from one domain to another, which is needed for our frontend to communicate with our backend).
+app.use(cors(corsOptions));
+
+// Parse requests of content-type - application/json
+app.use(bodyParser.json());
+
+// Parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// set port, listen for requests
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+});
+
+// Routes
+app.use("/", indexRouter);
+
+export default app;
