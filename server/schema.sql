@@ -4,7 +4,7 @@ CREATE TABLE public.song (
     id integer NOT NULL,
     title text NOT NULL,
     part text NOT NULL,
-    addDate date NOT NULL
+    date_added date NOT NULL
 );
 
 CREATE TABLE public.composer (
