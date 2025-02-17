@@ -51,35 +51,35 @@ function SongRow({ song }) {
     }
 
     return (
-        <tr>
-            <td>{song.title}</td>
-            <td>{composerName}</td>
-            <td>{arrangerName}</td>
-            <td>{song.part}</td>
-            <td>{formatDate(song.date_added)}</td>
+        <tr className="odd:bg-ghost-white-dark even:bg-vanilla">
+            <td className="px-6 py-3">{song.title}</td>
+            <td className="px-6 py-3">{composerName}</td>
+            <td className="px-6 py-3">{arrangerName}</td>
+            <td className="px-6 py-3">{song.part}</td>
+            <td className="px-6 py-3">{formatDate(song.date_added)}</td>
         </tr>
     )
 }
 
 export default function SongTable({ songs }) {
     return(
-        <div>
-            <table>
+        <div className="shadow-md w-3/4 mx-auto">
+            <table className="min-w-full table-auto border-collapse border border-jet">
                 <thead>
-                    <tr>
-                        <th>
+                    <tr className="bg-delft-blue-light border-jet text-ghost-white-dark">
+                        <th className="px-6 py-3 text-left border-b border-jet">
                             Song
                         </th>
-                        <th>
+                        <th className="px-6 py-3 text-left border-b border-jet">
                             Composer
                         </th>
-                        <th>
+                        <th className="px-6 py-3 text-left border-b border-jet">
                             Arranger
                         </th>
-                        <th>
+                        <th className="px-6 py-3 text-left border-b border-jet">
                             Part
                         </th>
-                        <th>
+                        <th className="px-6 py-3 text-left border-b border-jet">
                             Date added
                         </th>
                     </tr>
