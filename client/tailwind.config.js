@@ -7,10 +7,7 @@ export default {
   theme: {
       extend: {
           colors: {
-              "delft-blue": {
-                  light: "#2D3958",
-                  DEFAULT: "#2D3958"
-              },
+              "delft-blue": "#2D3958",
               "vanilla": "#FFF2A8",
               "ghost-white": {
                   DEFAULT: "#F4F4F9",

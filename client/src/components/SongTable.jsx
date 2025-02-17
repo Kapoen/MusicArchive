@@ -71,10 +71,10 @@ export default function SongTable({ songs }) {
     }
 
     return(
-        <div className="shadow-md w-3/4 mx-auto">
+        <div className="shadow-md w-5/6 h-3/4 mx-auto">
             <table className="min-w-full table-auto border-collapse border border-jet">
                 <thead>
-                    <tr className="bg-delft-blue-light border-jet text-ghost-white-dark">
+                    <tr className="bg-delft-blue border-jet text-ghost-white-dark">
                         <th className="px-6 py-3 text-left border-b border-jet">
                             Song
                         </th>
@@ -92,12 +92,16 @@ export default function SongTable({ songs }) {
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    {songs.map((song) => (
-                        <SongRow key={song.id} song={song} />
-                    ))}
-                </tbody>
             </table>
+            <div className="overflow-y-scroll max-h-[73vh]">
+                <table className="min-w-full table-auto border-collapse border border-jet">
+                    <tbody>
+                        {songs.map((song) => (
+                            <SongRow key={song.id} song={song} />
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
