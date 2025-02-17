@@ -62,6 +62,14 @@ function SongRow({ song }) {
 }
 
 export default function SongTable({ songs }) {
+    if (songs.length === 0) {
+        return (
+            <div>
+                No songs have been added yet.
+            </div>
+        )
+    }
+
     return(
         <div className="shadow-md w-3/4 mx-auto">
             <table className="min-w-full table-auto border-collapse border border-jet">

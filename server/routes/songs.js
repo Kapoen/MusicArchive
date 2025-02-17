@@ -7,8 +7,8 @@ router.get("/songs", async (req, res) => {
     try {
         const songs = await Song.getAllSongs();
         return res.status(200).json(songs);
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        console.error(err);
         return res.status(500).json({ error: "Unable to get songs" });
     }
 });
@@ -25,8 +25,8 @@ router.get("/:songId", async (req, res) => {
             return res.status(404).json({ error: "Song not found." });
         }
         return res.status(200).json(song);
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
         return res.status(500).json({ error: "Unable to get song." });
     }
 });

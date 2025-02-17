@@ -14,6 +14,16 @@ export default {
         return result.rows;
     },
 
+    addSong: async (title, part, date) => {
+        const song = await db.query(
+            `INSERT INTO public.song (title, part, date_added) 
+                    VALUES ($1, $2, $3) 
+                    RETURNING *;`,
+            [title, part, date]
+        );
+        return song.rows;
+    },
+
     searchSongByTitle: async (title) => {
         const result = await db.query(
             "SELECT * FROM public.song WHERE title ILIKE $1;",

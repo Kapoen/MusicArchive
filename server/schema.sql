@@ -1,14 +1,14 @@
 CREATE SCHEMA IF NOT EXISTS public;
 
 CREATE TABLE public.song (
-    id integer NOT NULL,
+    id SERIAL NOT NULL PRIMARY KEY,
     title text NOT NULL,
     part text NOT NULL,
     date_added date NOT NULL
 );
 
 CREATE TABLE public.composer (
-    id integer NOT NULL,
+    id SERIAL NOT NULL PRIMARY KEY,
     first_name text,
     last_name text NOT NULL
 );
@@ -19,24 +19,15 @@ CREATE TABLE public.song_to_composer (
 );
 
 CREATE TABLE public.arranger (
-     id integer NOT NULL,
+     id SERIAL NOT NULL PRIMARY KEY,
      first_name text,
-     last_name text NOT NULL
+     last_name text
 );
 
 CREATE TABLE public.song_to_arranger (
      song_id integer NOT NULL,
      arranger_id integer NOT NULL
 );
-
-ALTER TABLE ONLY public.song
-    ADD CONSTRAINT song_pkey PRIMARY KEY (id);
-
-ALTER TABLE ONLY public.composer
-    ADD CONSTRAINT composer_pkey PRIMARY KEY (id);
-
-ALTER TABLE ONLY public.arranger
-    ADD CONSTRAINT arranger_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.song_to_composer
     ADD CONSTRAINT song_to_composer_songfkey FOREIGN KEY (song_id)
