@@ -42,11 +42,14 @@ function SongRow({ song }) {
         if (!arrangerData) {
             arrangerName = "Not specified.";
         }
-        else if (arrangerData.first_name) {
-            arrangerName = `${arrangerData.first_name} ${arrangerData.last_name}`;
-        }
-        else if (arrangerData.last_name) {
+        else if (!arrangerData.first_name) {
             arrangerName = arrangerData.last_name;
+        }
+        else if (!arrangerData.last_name) {
+            arrangerName = arrangerData.first_name;
+        }
+        else {
+            arrangerName = `${arrangerData.first_name} ${arrangerData.last_name}`
         }
     }
 
