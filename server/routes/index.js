@@ -17,7 +17,10 @@ router.post("/addSong", async (req, res) => {
 
     try {
         const song = await Song.addSong(title, part, date);
-        const composer = await Composer.addComposer(composerF, composerL);
+        let composer = await Composer.getComposerByName(composerF, composerL);
+        if (!composer[0]) {
+            composer = await Composer.addComposer(composerF, composerL);
+        }
 
         if (!song || !composer) {
             return res.status(500).json({ error: "Failed adding song or composer." });
@@ -29,7 +32,11 @@ router.post("/addSong", async (req, res) => {
         }
 
         if (arrangerL != null || arrangerF != null) {
-            const arranger = await Arranger.addArranger(arrangerF, arrangerL);
+            let arranger = await Arranger.getArrangerByName(arrangerF, arrangerL);
+            if (!arranger[0]) {
+                arranger = await Arranger.addArranger(arrangerF, arrangerL);
+            }
+
             if(!arranger) {
                 return res.status(500).json({ error: "Failed adding arranger." });
             }
