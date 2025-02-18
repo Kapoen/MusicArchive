@@ -163,7 +163,7 @@ export default function SongTable({ songs }) {
                         <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer" id="song"
                                  onClick={() => sort("song")}>
-                                Song {"\u2b61"}
+                                Song
                             </div>
                         </th>
                         <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
