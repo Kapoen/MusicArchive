@@ -17,18 +17,21 @@ router.post("/addSong", async (req, res) => {
 
     try {
         const song = await Song.addSong(title, part, date);
-        let composer = await Composer.getComposerByName(composerF, composerL);
-        if (!composer[0]) {
-            composer = await Composer.addComposer(composerF, composerL);
-        }
 
-        if (!song || !composer) {
-            return res.status(500).json({ error: "Failed adding song or composer." });
-        }
+        if (composerF != null || composerL != null) {
+            let composer = await Composer.getComposerByName(composerF, composerL);
+            if (!composer[0]) {
+                composer = await Composer.addComposer(composerF, composerL);
+            }
 
-        const resultSTC = await ConnectTables.connectComposer(song[0].id, composer[0].id);
-        if (!resultSTC) {
-            return res.status(500).json({ error: "Failed linking song with composer." });
+            if (!song || !composer) {
+                return res.status(500).json({error: "Failed adding song or composer."});
+            }
+
+            const resultSTC = await ConnectTables.connectComposer(song[0].id, composer[0].id);
+            if (!resultSTC) {
+                return res.status(500).json({error: "Failed linking song with composer."});
+            }
         }
 
         if (arrangerL != null || arrangerF != null) {

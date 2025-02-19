@@ -8,7 +8,10 @@ export default function AddSongForm() {
         if (composerF === "") {
             composerF = null;
         }
-        const composerL = formData.get("composerL")
+        let composerL = formData.get("composerL");
+        if (composerL === "") {
+            composerL = null;
+        }
         let arrangerF = formData.get("arrangerF");
         if(arrangerF === "") {
             arrangerF = null;
