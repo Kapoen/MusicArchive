@@ -10,7 +10,7 @@ CREATE TABLE public.song (
 CREATE TABLE public.composer (
     id SERIAL NOT NULL PRIMARY KEY,
     first_name text,
-    last_name text NOT NULL
+    last_name text
 );
 
 CREATE TABLE public.song_to_composer (
