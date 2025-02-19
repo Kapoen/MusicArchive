@@ -32,7 +32,7 @@ export default function AddSongForm() {
                 <label htmlFor="composerF">Composer first name:</label>
                 <input type="text" id="composerF" name="composerF"/> <br />
                 <label htmlFor="composerL">Composer last name:</label>
-                <input type="text" id="composerL" name="composerL" required={true}/> <br />
+                <input type="text" id="composerL" name="composerL"/> <br />
                 <label htmlFor="arrangerF">Arranger first name:</label>
                 <input type="text" id="arrangerF" name="arrangerF"/> <br />
                 <label htmlFor="arrangerL">Arranger last name:</label>
