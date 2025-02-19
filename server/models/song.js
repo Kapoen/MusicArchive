@@ -24,7 +24,20 @@ export default {
         return song.rows;
     },
 
-    searchSong: async (keyword) => {
+    searchSong: async (keywords) => {
+        const searchTerms = keywords.split(" ").map((word) => {
+            if (word !== ""){
+                return`%${word}%`
+            }
+        });
+
+        const conditions = searchTerms.map((_, index) =>
+            `(s.title ILIKE $${index + 1} 
+                OR s.part ILIKE $${index + 1}
+                OR CONCAT(c.first_name, ' ', c.last_name) ILIKE $${index + 1}
+                OR CONCAT(a.first_name, ' ', a.last_name) ILIKE $${index + 1})`
+        )
+
         const result = await db.query(
             `SELECT s.id, s.title, s.part, s.date_added,
                 c.first_name c_first_name, c.last_name c_last_name,
@@ -34,11 +47,8 @@ export default {
                 JOIN public.composer c ON stc.composer_id = c.id
                 JOIN public.song_to_arranger sta ON s.id = sta.song_id
                 JOIN public.arranger a ON sta.arranger_id = a.id
-                WHERE s.title ILIKE $1 
-                OR s.part ILIKE $1
-                OR CONCAT(c.first_name, ' ', c.last_name) ILIKE $1
-                OR CONCAT(a.first_name, ' ', a.last_name) ILIKE $1`,
-            [`%${keyword}%`]
+                WHERE ${conditions.join(" AND ")};`,
+                searchTerms
             );
         return result.rows;
     },
