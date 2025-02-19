@@ -8,11 +8,11 @@ function SongRow({ song }) {
 
     return (
         <tr className="odd:bg-ghost-white-dark even:bg-vanilla">
-            <td className="px-6 py-3 min-w-36">{song.title}</td>
-            <td className="px-6 py-3 min-w-36">{composerName}</td>
-            <td className="px-6 py-3 min-w-36">{arrangerName}</td>
-            <td className="px-6 py-3 min-w-36">{song.part}</td>
-            <td className="px-6 py-3 min-w-36">{formatDate(song.date_added)}</td>
+            <td className="px-6 py-3 w-36">{song.title}</td>
+            <td className="px-6 py-3 w-36">{composerName}</td>
+            <td className="px-6 py-3 w-36">{arrangerName}</td>
+            <td className="px-6 py-3 w-36">{song.part}</td>
+            <td className="px-6 py-3 w-36">{formatDate(song.date_added)}</td>
         </tr>
     )
 }
@@ -106,35 +106,35 @@ export default function SongTable({ songs }) {
             <table className="min-w-full table-auto border-collapse border border-jet">
                 <thead>
                     <tr className="bg-delft-blue border-jet text-ghost-white-dark">
-                        <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
+                        <th className="px-6 py-3 w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("title")}>
                                 {sortConfig.column === "title" ?
                                     (sortConfig.direction === "asc" ? "Title \u2b61" : "Title \u2b63") : "Title"}
                             </div>
                         </th>
-                        <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
+                        <th className="px-6 py-3 w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("composer")}>
                                 {sortConfig.column === "composer" ?
                                     (sortConfig.direction === "asc" ? "Composer \u2b61" : "Composer \u2b63") : "Composer"}
                             </div>
                         </th>
-                        <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
+                        <th className="px-6 py-3 w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("arranger")}>
                                 {sortConfig.column === "arranger" ?
                                     (sortConfig.direction === "asc" ? "Arranger \u2b61" : "Arranger \u2b63") : "Arranger"}
                             </div>
                         </th>
-                        <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
+                        <th className="px-6 py-3 w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("part")}>
                                 {sortConfig.column === "part" ?
                                     (sortConfig.direction === "asc" ? "Part \u2b61" : "Part \u2b63") : "Part"}
                             </div>
                         </th>
-                        <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
+                        <th className="px-6 py-3 w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("date_added")}>
                                 {sortConfig.column === "date_added" ?
