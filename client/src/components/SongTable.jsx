@@ -95,7 +95,7 @@ export default function SongTable({ songs }) {
     if (songs.length === 0) {
         return (
             <div>
-                No songs have been added yet.
+                No songs have been added yet or the table is loading.
             </div>
         )
     }
