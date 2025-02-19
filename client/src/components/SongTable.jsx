@@ -1,57 +1,10 @@
 import React, {useEffect, useState} from "react";
 import api from "../api.js";
-import {formatDate} from "../utils/utils.js";
+import {formatDate, getNameString} from "../utils/utils.js";
 
 function SongRow({ song }) {
-    const [composerData, setComposerData] = useState(null);
-
-    useEffect(() => {
-        const fetchComposerData = async () => {
-            const response = await api.get("song/" + song.id + "/composer");
-            setComposerData(response.data[0]);
-        };
-
-        fetchComposerData();
-    }, [song.id]);
-
-    let composerName = "Loading...";
-    if(composerData) {
-        if (composerData.first_name) {
-            composerName = `${composerData.first_name} ${composerData.last_name}`;
-        }
-        else {
-            composerName = composerData.last_name;
-        }
-    }
-
-    const [arrangerData, setArrangerData] = useState(null);
-    const [arrangerDataLoading, setArrangerDataLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchArrangerData = async () => {
-            const response = await api.get("song/" + song.id + "/arranger");
-            setArrangerData(response.data[0]);
-            setArrangerDataLoading(false);
-        };
-
-        fetchArrangerData();
-    }, [song.id]);
-
-    let arrangerName = "Loading...";
-    if(!arrangerDataLoading) {
-        if (!arrangerData) {
-            arrangerName = "Not specified.";
-        }
-        else if (!arrangerData.first_name) {
-            arrangerName = arrangerData.last_name;
-        }
-        else if (!arrangerData.last_name) {
-            arrangerName = arrangerData.first_name;
-        }
-        else {
-            arrangerName = `${arrangerData.first_name} ${arrangerData.last_name}`
-        }
-    }
+    const composerName = getNameString(song.composer)
+    const arrangerName = getNameString(song.arranger)
 
     return (
         <tr className="odd:bg-ghost-white-dark even:bg-vanilla">
@@ -65,6 +18,80 @@ function SongRow({ song }) {
 }
 
 export default function SongTable({ songs }) {
+    const [filteredSongs, setFilteredSongs] = useState(songs);
+    const [searchInput, setSearchInput] = useState("");
+
+    useEffect(() => {
+        if (searchInput === "") {
+            setFilteredSongs(songs);
+        }
+        else {
+            const fetchSongs = async () => {
+                const response = await api.get("song/search/" + searchInput);
+                setFilteredSongs(response.data);
+            }
+
+            fetchSongs();
+        }
+
+    }, [searchInput, songs]);
+
+    const handleSearch = (event) => {
+        setSearchInput(event.target.value);
+    };
+
+    const [sortConfig, setSortConfig] = useState({
+        column: "title",
+        direction: "asc"
+    });
+
+    const sortSongs = (column) => {
+        let direction = "asc";
+        if (sortConfig.column === column && sortConfig.direction === "asc") {
+            direction = "desc";
+        }
+
+        const sortedSongs = [...filteredSongs].sort((a, b) => {
+            if (column === "date_added") {
+                const timeA = new Date(a[column]).getTime();
+                const timeB = new Date(b[column]).getTime();
+
+                if (timeA < timeB) {
+                    return direction === "asc" ? -1 : 1;
+                }
+
+                if (timeA > timeB) {
+                    return direction === "desc" ? 1 : -1;
+                }
+
+                return 0;
+            }
+
+            let stringA, stringB;
+            if (column === "composer" || column === "arranger") {
+                stringA = getNameString(a[column]).toLowerCase();
+                stringB = getNameString(b[column]).toLowerCase();
+            }
+            else {
+                stringA = a[column].toLowerCase();
+                stringB = b[column].toLowerCase();
+            }
+
+            if (stringA < stringB) {
+                return direction === "asc" ? -1 : 1;
+            }
+
+            if (stringA > stringB) {
+                return direction === "asc" ? 1 : -1;
+            }
+
+            return 0;
+        });
+
+        setSortConfig({ column: column, direction: direction});
+        setFilteredSongs(sortedSongs);
+    };
+
     if (songs.length === 0) {
         return (
             <div>
@@ -73,121 +100,45 @@ export default function SongTable({ songs }) {
         )
     }
 
-    function sort(column) {
-        const table = document.getElementById("songDataTable");
-        const columns = ["song", "composer", "arranger", "part", "date"];
-        const columnIndex = columns.findIndex(item => item === column);
-
-        let rows, toSwitch, i, x, y;
-
-        let asc = true;
-        const thArray = document.getElementById(column).innerHTML.split(" ");
-        if (thArray[thArray.length - 1] === "\u2b61") {
-            asc = false;
-            thArray[thArray.length - 1] = "\u2b63";
-        }
-        else if ((thArray.length > 1 && columnIndex !== 4) || thArray.length > 2) {
-            thArray[thArray.length - 1] = "\u2b61";
-        }
-
-        if (!((thArray.length > 1 && columnIndex !== 4) || thArray.length > 2)) {
-            thArray.push("\u2b61");
-        }
-
-        let sorting = true;
-        while (sorting) {
-            sorting = false;
-            rows = table.rows;
-
-            for (i = 0; i < (rows.length - 1); i++) {
-                toSwitch = false;
-
-                x = rows[i].getElementsByTagName("TD")[columnIndex];
-                y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
-
-                if (column === "date") {
-                    x = x.innerHTML.split("/");
-                    y = y.innerHTML.split("/")
-                    const dateX = new Date(x[2], x[1], x[0]);
-                    const dateY = new Date(y[2], y[1], y[0]);
-
-                    if (asc && dateX > dateY) {
-                        toSwitch = true;
-                        break;
-                    }
-
-                    else if (!asc && dateX < dateY) {
-                        toSwitch = true;
-                        break
-                    }
-                }
-
-                else if (asc && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                    toSwitch = true;
-                    break;
-                }
-
-                else if (!asc && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                    toSwitch = true;
-                    break;
-                }
-            }
-
-            if (toSwitch) {
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                sorting = true;
-            }
-        }
-
-        document.getElementById(column).innerHTML = thArray.toString()
-            .replaceAll(",", " ");
-
-        for (let j = 0; j < columns.length; j++) {
-            const header = document.getElementById(columns[j]).innerHTML;
-            const headerArray = header.split(" ")
-
-            if (((headerArray.length > 1 && j !== 4) || headerArray.length > 2)
-                && j !== columnIndex) {
-                headerArray.pop();
-                document.getElementById(columns[j]).innerHTML = headerArray.toString()
-                    .replaceAll(",", " ");
-            }
-        }
-    }
-
     return(
         <div className="shadow-md w-5/6 h-3/4 mx-auto">
+            <input type="text" value={searchInput} onChange={handleSearch} />
             <table className="min-w-full table-auto border-collapse border border-jet">
                 <thead>
                     <tr className="bg-delft-blue border-jet text-ghost-white-dark">
                         <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
-                            <div className="hover:cursor-pointer" id="song"
-                                 onClick={() => sort("song")}>
-                                Song
+                            <div className="hover:cursor-pointer"
+                                 onClick={() => sortSongs("title")}>
+                                {sortConfig.column === "title" ?
+                                    (sortConfig.direction === "asc" ? "Title \u2b61" : "Title \u2b63") : "Title"}
                             </div>
                         </th>
                         <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
-                            <div className="hover:cursor-pointer" id="composer"
-                                 onClick={() => sort("composer")}>
-                                Composer
+                            <div className="hover:cursor-pointer"
+                                 onClick={() => sortSongs("composer")}>
+                                {sortConfig.column === "composer" ?
+                                    (sortConfig.direction === "asc" ? "Composer \u2b61" : "Composer \u2b63") : "Composer"}
                             </div>
                         </th>
                         <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
-                            <div className="hover:cursor-pointer" id="arranger"
-                                 onClick={() => sort("arranger")}>
-                                Arranger
+                            <div className="hover:cursor-pointer"
+                                 onClick={() => sortSongs("arranger")}>
+                                {sortConfig.column === "arranger" ?
+                                    (sortConfig.direction === "asc" ? "Arranger \u2b61" : "Arranger \u2b63") : "Arranger"}
                             </div>
                         </th>
                         <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
-                            <div className="hover:cursor-pointer" id="part"
-                                 onClick={() => sort("part")}>
-                                Part
+                            <div className="hover:cursor-pointer"
+                                 onClick={() => sortSongs("part")}>
+                                {sortConfig.column === "part" ?
+                                    (sortConfig.direction === "asc" ? "Part \u2b61" : "Part \u2b63") : "Part"}
                             </div>
                         </th>
                         <th className="px-6 py-3 min-w-36 text-left border-b border-jet">
-                            <div className="hover:cursor-pointer" id="date"
-                                 onClick={() => sort("date")}>
-                                Date added
+                            <div className="hover:cursor-pointer"
+                                 onClick={() => sortSongs("date_added")}>
+                                {sortConfig.column === "date_added" ?
+                                    (sortConfig.direction === "asc" ? "Date added \u2b61" : "Date added \u2b63") : "Date added"}
                             </div>
                         </th>
                     </tr>
@@ -196,7 +147,7 @@ export default function SongTable({ songs }) {
             <div className="overflow-y-scroll max-h-[73vh]">
                 <table id="songDataTable" className="min-w-full table-auto border-collapse border border-jet">
                     <tbody>
-                        {songs.map((song) => (
+                        {filteredSongs.map((song) => (
                             <SongRow key={song.id} song={song} />
                         ))}
                     </tbody>
