@@ -41,7 +41,7 @@ export default function SongTable({ songs }) {
     };
 
     const [sortConfig, setSortConfig] = useState({
-        column: "title",
+        column: "",
         direction: "asc"
     });
 
