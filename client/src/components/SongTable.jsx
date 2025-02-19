@@ -28,7 +28,20 @@ export default function SongTable({ songs }) {
         else {
             const fetchSongs = async () => {
                 const response = await api.get("song/search/" + searchInput);
-                setFilteredSongs(response.data);
+                const songsExpanded = response.data.map((song) => ({
+                    title: song.title,
+                    composer: {
+                        first_name: song.c_first_name,
+                        last_name: song.c_last_name
+                    },
+                    arranger: {
+                        first_name: song.a_first_name,
+                        last_name: song.a_last_name
+                    },
+                    part: song.part,
+                    date_added: song.date_added
+                }))
+                setFilteredSongs(songsExpanded);
             }
 
             fetchSongs();

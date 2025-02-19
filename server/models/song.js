@@ -24,10 +24,21 @@ export default {
         return song.rows;
     },
 
-    searchSongByTitle: async (title) => {
+    searchSong: async (keyword) => {
         const result = await db.query(
-            "SELECT * FROM public.song WHERE title ILIKE $1;",
-            [`%${title}%`]
+            `SELECT s.id, s.title, s.part, s.date_added,
+                c.first_name c_first_name, c.last_name c_last_name,
+                a.first_name a_first_name, a.last_name a_last_name 
+                FROM public.song s
+                JOIN public.song_to_composer stc ON s.id = stc.song_id
+                JOIN public.composer c ON stc.composer_id = c.id
+                JOIN public.song_to_arranger sta ON s.id = sta.song_id
+                JOIN public.arranger a ON sta.arranger_id = a.id
+                WHERE s.title ILIKE $1 
+                OR s.part ILIKE $1
+                OR CONCAT(c.first_name, ' ', c.last_name) ILIKE $1
+                OR CONCAT(a.first_name, ' ', a.last_name) ILIKE $1`,
+            [`%${keyword}%`]
             );
         return result.rows;
     },

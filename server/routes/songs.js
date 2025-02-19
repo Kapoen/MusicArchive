@@ -31,14 +31,14 @@ router.get("/:songId", async (req, res) => {
     }
 });
 
-router.get("/search/:title", async (req, res) => {
-    const { title } = req.params;
-    if (!title) {
-        return res.status(404).json({ error: "Missing title." });
+router.get("/search/:keyword", async (req, res) => {
+    const { keyword } = req.params;
+    if (!keyword) {
+        return res.status(404).json({ error: "Missing keyword." });
     }
 
     try {
-        const song = await Song.searchSongByTitle(title);
+        const song = await Song.searchSong(keyword);
         if (!song) {
             return res.status(404).json({ error: "Song not found." });
         }
