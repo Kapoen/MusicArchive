@@ -43,13 +43,18 @@ export default {
                 c.first_name c_first_name, c.last_name c_last_name,
                 a.first_name a_first_name, a.last_name a_last_name 
                 FROM public.song s
-                JOIN public.song_to_composer stc ON s.id = stc.song_id
-                JOIN public.composer c ON stc.composer_id = c.id
-                JOIN public.song_to_arranger sta ON s.id = sta.song_id
-                JOIN public.arranger a ON sta.arranger_id = a.id
+                FULL JOIN public.song_to_composer stc ON s.id = stc.song_id
+                FULL JOIN public.composer c ON stc.composer_id = c.id
+                FULL JOIN public.song_to_arranger sta ON s.id = sta.song_id
+                FULL JOIN public.arranger a ON sta.arranger_id = a.id
                 WHERE ${conditions.join(" AND ")};`,
                 searchTerms
             );
+
+        console.log("-------------")
+        console.log(searchTerms)
+        console.log(conditions)
+        console.log(result.rows)
         return result.rows;
     },
 
