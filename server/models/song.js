@@ -51,10 +51,6 @@ export default {
                 searchTerms
             );
 
-        console.log("-------------")
-        console.log(searchTerms)
-        console.log(conditions)
-        console.log(result.rows)
         return result.rows;
     },
 
