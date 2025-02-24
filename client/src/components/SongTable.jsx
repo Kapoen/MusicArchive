@@ -2,22 +2,22 @@ import React, {useEffect, useState} from "react";
 import api from "../api.js";
 import {formatDate, getNameString} from "../utils/utils.js";
 
-function SongRow({ song }) {
+function SongRow({ song, editable }) {
     const composerName = getNameString(song.composer)
     const arrangerName = getNameString(song.arranger)
 
     return (
         <tr className="odd:bg-ghost-white-dark even:bg-vanilla">
-            <td className="px-6 py-3 w-36">{song.title}</td>
-            <td className="px-6 py-3 w-36">{composerName}</td>
-            <td className="px-6 py-3 w-36">{arrangerName}</td>
-            <td className="px-6 py-3 w-36">{song.part}</td>
+            <td className="px-6 py-3 w-36">{editable ? (<input type="text" defaultValue={song.title}/>) : (song.title)}</td>
+            <td className="px-6 py-3 w-36">{editable ? (<input type="text" defaultValue={composerName}/>) : (composerName)}</td>
+            <td className="px-6 py-3 w-36">{editable ? (<input type="text" defaultValue={arrangerName}/>) : (arrangerName)}</td>
+            <td className="px-6 py-3 w-36">{editable ? (<input type="text" defaultValue={song.part}/>) : (song.part)}</td>
             <td className="px-6 py-3 w-36">{formatDate(song.date_added)}</td>
         </tr>
     )
 }
 
-export default function SongTable({ songs }) {
+export default function SongTable({ songs, editable }) {
     const [filteredSongs, setFilteredSongs] = useState(songs);
     const [searchInput, setSearchInput] = useState("");
 
@@ -161,7 +161,7 @@ export default function SongTable({ songs }) {
                 <table id="songDataTable" className="min-w-full table-auto border-collapse border border-jet">
                     <tbody>
                         {filteredSongs.map((song) => (
-                            <SongRow key={song.id} song={song} />
+                            <SongRow key={song.id} song={song} editable={editable} />
                         ))}
                     </tbody>
                 </table>

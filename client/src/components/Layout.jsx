@@ -22,6 +22,14 @@ export default function Layout({ children }) {
                             Add song
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to="/editSong" className={({ isActive }) => `
+                            ${isActive ? "text-vanilla font-bold" : "text-ghost-white-dark"}
+                        `}
+                        >
+                            Edit song
+                        </NavLink>
+                    </li>
                 </ul>
             </nav>
             {children}
