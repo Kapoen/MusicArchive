@@ -23,6 +23,14 @@ export default function Layout({ children }) {
                         </NavLink>
                     </li>
                     <li>
+                        <NavLink to="/deleteSong" className={({ isActive }) => `
+                            ${isActive ? "text-vanilla font-bold" : "text-ghost-white-dark"}
+                        `}
+                        >
+                            Delete song
+                        </NavLink>
+                    </li>
+                    <li>
                         <NavLink to="/editSong" className={({ isActive }) => `
                             ${isActive ? "text-vanilla font-bold" : "text-ghost-white-dark"}
                         `}

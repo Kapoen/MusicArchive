@@ -9,7 +9,7 @@ export default function EditSong() {
 
     return (
         <Layout>
-            <SongTable songs={songs} editable={true}/>
+            <SongTable songs={songs} editSongs={true} deleteSongs={false}/>
         </Layout>
     );
 };

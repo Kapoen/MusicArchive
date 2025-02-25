@@ -2,22 +2,27 @@ import React, {useEffect, useState} from "react";
 import api from "../api.js";
 import {formatDate, getNameString} from "../utils/utils.js";
 
-function SongRow({ song, editable }) {
+function SongRow({ song, editSongs, deleteSongs }) {
     const composerName = getNameString(song.composer)
     const arrangerName = getNameString(song.arranger)
 
     return (
-        <tr className="odd:bg-ghost-white-dark even:bg-vanilla">
-            <td className="px-6 py-3 w-36">{editable ? (<input type="text" defaultValue={song.title}/>) : (song.title)}</td>
-            <td className="px-6 py-3 w-36">{editable ? (<input type="text" defaultValue={composerName}/>) : (composerName)}</td>
-            <td className="px-6 py-3 w-36">{editable ? (<input type="text" defaultValue={arrangerName}/>) : (arrangerName)}</td>
-            <td className="px-6 py-3 w-36">{editable ? (<input type="text" defaultValue={song.part}/>) : (song.part)}</td>
+        <tr className="odd:bg-ghost-white-dark even:bg-vanilla w-full">
+            <td className="px-6 py-3 w-36">{editSongs ? (<input type="text" defaultValue={song.title}/>) : (song.title)}</td>
+            <td className="px-6 py-3 w-36">{editSongs ? (<input type="text" defaultValue={composerName}/>) : (composerName)}</td>
+            <td className="px-6 py-3 w-36">{editSongs ? (<input type="text" defaultValue={arrangerName}/>) : (arrangerName)}</td>
+            <td className="px-6 py-3 w-36">{editSongs ? (<input type="text" defaultValue={song.part}/>) : (song.part)}</td>
             <td className="px-6 py-3 w-36">{formatDate(song.date_added)}</td>
+            {deleteSongs ?
+                <td className="px-6 py-3 w-1">
+                    <input type="checkbox"/>
+                </td>
+                : ""}
         </tr>
     )
 }
 
-export default function SongTable({ songs, editable }) {
+export default function SongTable({ songs, editSongs, deleteSongs }) {
     const [filteredSongs, setFilteredSongs] = useState(songs);
     const [searchInput, setSearchInput] = useState("");
 
@@ -154,6 +159,13 @@ export default function SongTable({ songs, editable }) {
                                     (sortConfig.direction === "asc" ? "Date added \u2b61" : "Date added \u2b63") : "Date added"}
                             </div>
                         </th>
+                        {
+                            deleteSongs ?
+                            <th className="px-6 py-3 w-1 text-left border-b border-jet">
+                                <input type="checkbox"/>
+                            </th>
+                                : ""
+                        }
                     </tr>
                 </thead>
             </table>
@@ -161,7 +173,7 @@ export default function SongTable({ songs, editable }) {
                 <table id="songDataTable" className="min-w-full table-auto border-collapse border border-jet">
                     <tbody>
                         {filteredSongs.map((song) => (
-                            <SongRow key={song.id} song={song} editable={editable} />
+                            <SongRow key={song.id} song={song} editSongs={editSongs} deleteSongs={deleteSongs} />
                         ))}
                     </tbody>
                 </table>
