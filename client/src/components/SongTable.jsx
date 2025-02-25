@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import api from "../api.js";
 import {formatDate, getNameString} from "../utils/utils.js";
 
-function SongRow({ song, editSongs, deleteSongs }) {
+function SongRow({ song, editSongs, deleteSongs, selectedSongs, handleSelect }) {
     const composerName = getNameString(song.composer)
     const arrangerName = getNameString(song.arranger)
 
@@ -15,7 +15,10 @@ function SongRow({ song, editSongs, deleteSongs }) {
             <td className="px-6 py-3 w-36">{formatDate(song.date_added)}</td>
             {deleteSongs ?
                 <td className="px-6 py-3 w-1">
-                    <input type="checkbox"/>
+                    <input type="checkbox"
+                           checked={selectedSongs.includes(song.id)}
+                           onChange={() => handleSelect(song.id)}
+                    />
                 </td>
                 : ""}
         </tr>
@@ -110,6 +113,23 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
         setFilteredSongs(sortedSongs);
     };
 
+    const [selectedSongs, setSelectedSongs] = useState([]);
+    const selectAll = () => {
+        if (selectedSongs.length === filteredSongs.length) {
+            setSelectedSongs([]);
+        } else {
+            setSelectedSongs(filteredSongs.map(song => song.id));
+        }
+    }
+
+    const handleSelect = (songID) => {
+        setSelectedSongs((currSelected) =>
+            currSelected.includes(songID)
+                ? currSelected.filter((song) => song !== songID)
+                : [...currSelected, songID]
+        );
+    }
+
     if (songs.length === 0) {
         return (
             <div>
@@ -162,7 +182,9 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
                         {
                             deleteSongs ?
                             <th className="px-6 py-3 w-1 text-left border-b border-jet">
-                                <input type="checkbox"/>
+                                <input type="checkbox"
+                                       checked={selectedSongs.length === filteredSongs.length}
+                                       onChange={() => selectAll()}/>
                             </th>
                                 : ""
                         }
@@ -173,7 +195,11 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
                 <table id="songDataTable" className="min-w-full table-auto border-collapse border border-jet">
                     <tbody>
                         {filteredSongs.map((song) => (
-                            <SongRow key={song.id} song={song} editSongs={editSongs} deleteSongs={deleteSongs} />
+                            <SongRow key={song.id} song={song}
+                                     editSongs={editSongs} deleteSongs={deleteSongs}
+                                     selectedSongs={selectedSongs}
+                                     handleSelect={handleSelect}
+                            />
                         ))}
                     </tbody>
                 </table>
