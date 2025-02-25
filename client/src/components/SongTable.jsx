@@ -13,8 +13,8 @@ function SongRow({ song, editSongs, deleteSongs, selectedSongs, handleSelect }) 
             <td className="px-6 py-3 w-36">{editSongs ? (<input type="text" defaultValue={arrangerName}/>) : (arrangerName)}</td>
             <td className="px-6 py-3 w-36">{editSongs ? (<input type="text" defaultValue={song.part}/>) : (song.part)}</td>
             <td className="px-6 py-3 w-36">{formatDate(song.date_added)}</td>
-            {deleteSongs ?
-                <td className="px-6 py-3 w-1">
+            {deleteSongs
+                ? <td className="px-6 py-3 w-1">
                     <input type="checkbox"
                            checked={selectedSongs.includes(song.id)}
                            onChange={() => handleSelect(song.id)}
@@ -180,12 +180,13 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
                             </div>
                         </th>
                         {
-                            deleteSongs ?
-                            <th className="px-6 py-3 w-1 text-left border-b border-jet">
-                                <input type="checkbox"
-                                       checked={selectedSongs.length === filteredSongs.length}
-                                       onChange={() => selectAll()}/>
-                            </th>
+                            deleteSongs
+                                ? <th className="px-6 py-3 w-1 text-left border-b border-jet">
+                                    <input type="checkbox"
+                                           checked={selectedSongs.length === filteredSongs.length}
+                                           onChange={() => selectAll()}
+                                    />
+                                </th>
                                 : ""
                         }
                     </tr>
