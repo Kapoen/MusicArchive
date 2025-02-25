@@ -1,5 +1,5 @@
 # Music Archive
-This is a way for me to see what sheet music I have laying around.
+This is a way for me to see what sheet music I have lying around.
 So that I don't have to search manually only to find out that I don't have it.
 
 ## Setting the database up yourself

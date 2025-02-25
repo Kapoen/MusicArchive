@@ -8,10 +8,6 @@ import connectTables from "../models/connectTables.js";
 
 const router = express.Router();
 
-router.get("/", function (req, res, next) {
-    res.json({ message: "Dit werkt?" });
-})
-
 router.post("/addSong", async (req, res) => {
     const { title, composerF, composerL, arrangerF, arrangerL, part, date } = req.body;
 
