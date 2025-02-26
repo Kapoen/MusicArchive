@@ -26,5 +26,15 @@ export default {
             [first_name, last_name]
         );
         return composer.rows;
+    },
+
+    deleteComposer: async (composerID) => {
+        const result = await db.query(
+            `DELETE FROM public.composer
+                    WHERE id = $1
+                    RETURNING *;`,
+            [composerID]
+        );
+        return result.rows;
     }
 }

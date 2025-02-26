@@ -37,6 +37,7 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
             const fetchSongs = async () => {
                 const response = await api.get("song/search/" + searchInput);
                 const songsExpanded = response.data.map((song) => ({
+                    id: song.id,
                     title: song.title,
                     composer: {
                         first_name: song.c_first_name,
@@ -130,6 +131,20 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
         );
     }
 
+    const deleteSelected = async () => {
+        for (const songID of selectedSongs) {
+            const response = await api.delete("deleteSong/" + songID);
+            if (response.status === 204) {
+                setSelectedSongs((currSelected) =>
+                    currSelected.filter((song) => song !== songID)
+                );
+                setFilteredSongs((currFiltered) =>
+                    currFiltered.filter((song) => song.id !== songID)
+                );
+            }
+        }
+    }
+
     if (songs.length === 0) {
         return (
             <div>
@@ -184,7 +199,7 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
                                 ? <th className="px-6 py-3 w-1 text-left border-b border-jet">
                                     <input type="checkbox"
                                            checked={selectedSongs.length === filteredSongs.length}
-                                           onChange={() => selectAll()}
+                                           onChange={selectAll}
                                     />
                                 </th>
                                 : ""
@@ -205,6 +220,10 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
                     </tbody>
                 </table>
             </div>
+            {deleteSongs
+                ? <button onClick={deleteSelected}>Delete selected</button>
+                : ""
+            }
         </div>
     );
 };

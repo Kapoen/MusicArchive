@@ -24,6 +24,16 @@ export default {
         return song.rows;
     },
 
+    deleteSong: async (songID) => {
+        const result = await db.query(
+            `DELETE FROM public.song
+                    WHERE id = $1
+                    RETURNING *;`,
+            [songID]
+        );
+        return result.rows;
+    },
+
     searchSong: async (keywords) => {
         const searchTerms = keywords.split(" ").map((word) => {
             if (word !== ""){

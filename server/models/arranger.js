@@ -26,5 +26,15 @@ export default {
             [first_name, last_name]
         );
         return arranger.rows;
+    },
+
+    deleteArranger: async (arrangerID) => {
+        const result = await db.query(
+            `DELETE FROM public.arranger
+                    WHERE id = $1
+                    RETURNING *;`,
+            [arrangerID]
+        );
+        return result.rows;
     }
 }
