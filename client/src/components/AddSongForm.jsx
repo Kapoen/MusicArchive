@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import api from "../api.js";
+import {useSongs} from "../utils/SongContext.jsx";
 
 export default function AddSongForm() {
-    function addSong(formData) {
+    const { fetchSongs } = useSongs();
+
+    const addSong = async (formData) => {
         const title = formData.get("title");
         let composerF = formData.get("composerF");
         if (composerF === "") {
@@ -13,18 +16,21 @@ export default function AddSongForm() {
             composerL = null;
         }
         let arrangerF = formData.get("arrangerF");
-        if(arrangerF === "") {
+        if (arrangerF === "") {
             arrangerF = null;
         }
         let arrangerL = formData.get("arrangerL");
-        if(arrangerL === "") {
+        if (arrangerL === "") {
             arrangerL = null;
         }
         const part = formData.get("part");
 
         const date = new Date().toISOString();
 
-        api.post("addSong", {title, composerF, composerL, arrangerF, arrangerL, part, date});
+        const response = await api.post("addSong", {title, composerF, composerL, arrangerF, arrangerL, part, date});
+        if (response.status === 201) {
+            fetchSongs();
+        }
     }
 
     return (

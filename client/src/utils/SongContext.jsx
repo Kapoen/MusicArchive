@@ -44,7 +44,7 @@ export const SongProvider = ({ children }) => {
     }, []);
 
     return (
-        <SongContext.Provider value={{ songs }}>
+        <SongContext.Provider value={{ songs, fetchSongs }}>
             {children}
         </SongContext.Provider>
     );

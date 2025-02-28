@@ -3,8 +3,8 @@ import api from "../api.js";
 import {formatDate, getNameString} from "../utils/utils.js";
 
 function SongRow({ song, editSongs, deleteSongs, selectedSongs, handleSelect }) {
-    const composerName = getNameString(song.composer)
-    const arrangerName = getNameString(song.arranger)
+    const composerName = getNameString(song.composer);
+    const arrangerName = getNameString(song.arranger);
 
     return (
         <tr className="odd:bg-ghost-white-dark even:bg-vanilla w-full">

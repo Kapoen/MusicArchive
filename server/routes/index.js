@@ -55,7 +55,7 @@ router.post("/addSong", async (req, res) => {
 router.delete("/deleteSong/:songID", async (req, res) => {
     const { songID } = req.params;
     if (!songID) {
-        return res.status(404).json({ error: "Missing songID" })
+        return res.status(404).json({ error: "Missing songID" });
     }
 
     try {
@@ -103,7 +103,7 @@ router.delete("/deleteSong/:songID", async (req, res) => {
         return res.status(204).send();
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ error: "Unexpected error while deleting song." })
+        return res.status(500).json({ error: "Unexpected error while deleting song." });
     }
 });
 
