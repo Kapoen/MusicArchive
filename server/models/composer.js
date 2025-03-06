@@ -36,5 +36,16 @@ export default {
             [composerID]
         );
         return result.rows;
+    },
+
+    updateComposer: async (composerID, first_name, last_name) => {
+        const result = await db.query(
+            `UPDATE public.composer
+                    SET first_name = $1, last_name = $2
+                    WHERE id = $3
+                    RETURNING *;`,
+            [first_name, last_name, composerID]
+        );
+        return result.rows;
     }
 }

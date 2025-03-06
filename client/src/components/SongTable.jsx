@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from "react";
 import api from "../api.js";
 import {formatDate, getNameString} from "../utils/utils.js";
+import {useSongs} from "../utils/SongContext.jsx";
 
-function SongRow({ song, editSongs, editing, setEditing, deleteSongs, selectedSongs, handleSelect }) {
+function SongRow({ song, editSongs, editing, setEditing, handleSave, deleteSongs, selectedSongs, handleSelect }) {
     const composerName = getNameString(song.composer);
     const arrangerName = getNameString(song.arranger);
 
-    const handleSave = () => {
-        //TODO IMPLEMENT
-        return;
-    }
+    const [editedTitle, setEditedTitle] = useState(song.title);
+    const [editedComposer, setEditedComposer] = useState(composerName);
+    const [editedArranger, setEditedArranger] = useState(arrangerName);
+    const [editedPart, setEditedPart] = useState(song.part);
+
+    const { fetchSongs } = useSongs();
 
     return (
         <tr className="odd:bg-ghost-white-dark even:bg-vanilla w-full">
@@ -27,7 +30,11 @@ function SongRow({ song, editSongs, editing, setEditing, deleteSongs, selectedSo
                             <button
                                 className="w-1 pr-2"
                                 aria-label="Save changes"
-                                onClick={handleSave}
+                                onClick={async () => {
+                                    await handleSave(song.id, editedTitle, editedComposer, editedArranger, editedPart);
+                                    setEditing(null);
+                                    fetchSongs();
+                                }}
                             >
                                 {"\u2714"}
                             </button>
@@ -42,10 +49,10 @@ function SongRow({ song, editSongs, editing, setEditing, deleteSongs, selectedSo
                     )}
                 </td>
             )}
-            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={song.title}/>) : (song.title)}</td>
-            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={composerName}/>) : (composerName)}</td>
-            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={arrangerName}/>) : (arrangerName)}</td>
-            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={song.part}/>) : (song.part)}</td>
+            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={song.title} onChange={(event) => setEditedTitle(event.target.value)}/>) : (song.title)}</td>
+            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={composerName} onChange={(event) => setEditedComposer(event.target.value)}/>) : (composerName)}</td>
+            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={arrangerName} onChange={(event) => setEditedArranger(event.target.value)}/>) : (arrangerName)}</td>
+            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={song.part} onChange={(event) => setEditedPart(event.target.value)}/>) : (song.part)}</td>
             <td className="px-6 py-3 w-36">{formatDate(song.date_added)}</td>
             {deleteSongs &&
                 <td className="px-6 py-3 w-1">
@@ -60,7 +67,7 @@ function SongRow({ song, editSongs, editing, setEditing, deleteSongs, selectedSo
     )
 }
 
-export default function SongTable({ songs, editSongs, deleteSongs }) {
+export default function SongTable({ songs, editSongs, handleSave, deleteSongs }) {
     const [filteredSongs, setFilteredSongs] = useState(songs);
     const [searchInput, setSearchInput] = useState("");
 
@@ -258,6 +265,7 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
                                      selectedSongs={selectedSongs}
                                      handleSelect={handleSelect}
                                      editing={editing} setEditing={setEditing}
+                                     handleSave={handleSave}
                             />
                         ))}
                     </tbody>

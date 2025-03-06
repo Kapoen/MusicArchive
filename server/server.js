@@ -6,6 +6,8 @@ const app = express();
 
 import indexRouter from "./routes/index.js";
 import songRouter from "./routes/songs.js";
+import composerRouter from "./routes/composers.js";
+import arrangerRouter from "./routes/arrangers.js"
 
 const corsOptions = {
     // If you change the port number of the frontend, you need to change it here as well.
@@ -31,5 +33,7 @@ app.listen(PORT, () => {
 // Routes
 app.use("/", indexRouter);
 app.use("/song", songRouter);
+app.use("/composer", composerRouter);
+app.use("/arranger", arrangerRouter);
 
 export default app;

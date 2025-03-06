@@ -36,5 +36,16 @@ export default {
             [arrangerID]
         );
         return result.rows;
+    },
+
+    updateArranger: async (arrangerID, first_name, last_name) => {
+        const result = await db.query(
+            `UPDATE public.arranger
+                    SET first_name = $1, last_name = $2
+                    WHERE id = $3
+                    RETURNING *;`,
+            [first_name, last_name, arrangerID]
+        );
+        return result.rows;
     }
 }

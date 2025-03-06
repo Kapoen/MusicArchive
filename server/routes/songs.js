@@ -85,4 +85,25 @@ router.get("/:songID/arranger", async (req, res) => {
     }
 });
 
+router.put("/:songID", async (req, res) => {
+    const { songID } = req.params;
+    const { title, part } = req.body;
+
+    if (!songID) {
+        return res.status(404).json({ error: "Missing songID" });
+    }
+
+    try {
+        const updated = await Song.updateSong(songID, title, part);
+        if (!updated) {
+            return res.status(500).json({ error: "Failed updating song" })
+        }
+
+        return res.status(204).send();
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: "Unexpected error occurred when updating song" })
+    }
+})
+
 export default router;

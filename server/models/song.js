@@ -34,6 +34,17 @@ export default {
         return result.rows;
     },
 
+    updateSong: async (songID, title, part) => {
+        const result = await db.query(
+            `UPDATE public.song
+                    SET title = $1, part = $2
+                    WHERE id = $3
+                    RETURNING *;`,
+            [title, part, songID]
+        );
+        return result.rows;
+    },
+
     searchSong: async (keywords) => {
         const searchTerms = keywords.split(" ").map((word) => {
             if (word !== ""){
