@@ -2,25 +2,60 @@ import React, {useEffect, useState} from "react";
 import api from "../api.js";
 import {formatDate, getNameString} from "../utils/utils.js";
 
-function SongRow({ song, editSongs, deleteSongs, selectedSongs, handleSelect }) {
+function SongRow({ song, editSongs, editing, setEditing, deleteSongs, selectedSongs, handleSelect }) {
     const composerName = getNameString(song.composer);
     const arrangerName = getNameString(song.arranger);
 
+    const handleSave = () => {
+        //TODO IMPLEMENT
+        return;
+    }
+
     return (
         <tr className="odd:bg-ghost-white-dark even:bg-vanilla w-full">
-            <td className="px-6 py-3 w-36">{editSongs ? (<input type="text" defaultValue={song.title}/>) : (song.title)}</td>
-            <td className="px-6 py-3 w-36">{editSongs ? (<input type="text" defaultValue={composerName}/>) : (composerName)}</td>
-            <td className="px-6 py-3 w-36">{editSongs ? (<input type="text" defaultValue={arrangerName}/>) : (arrangerName)}</td>
-            <td className="px-6 py-3 w-36">{editSongs ? (<input type="text" defaultValue={song.part}/>) : (song.part)}</td>
+            {editSongs && (
+                <td className="px-6 py-3 w-2">
+                    {editing !== song.id ? (
+                        <button
+                            aria-label="Edit song"
+                            onClick={() => setEditing(song.id)}
+                        >
+                            {"\u270E"}
+                        </button>
+                    ) : (
+                        <>
+                            <button
+                                className="w-1 pr-2"
+                                aria-label="Save changes"
+                                onClick={handleSave}
+                            >
+                                {"\u2714"}
+                            </button>
+                            <button
+                                className="w-1 pl-2"
+                                aria-label="Cancel"
+                                onClick={() => setEditing(null)}
+                            >
+                                {"\u2716"}
+                            </button>
+                        </>
+                    )}
+                </td>
+            )}
+            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={song.title}/>) : (song.title)}</td>
+            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={composerName}/>) : (composerName)}</td>
+            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={arrangerName}/>) : (arrangerName)}</td>
+            <td className="px-6 py-3 w-36">{editing === song.id ? (<input type="text" defaultValue={song.part}/>) : (song.part)}</td>
             <td className="px-6 py-3 w-36">{formatDate(song.date_added)}</td>
-            {deleteSongs
-                ? <td className="px-6 py-3 w-1">
+            {deleteSongs &&
+                <td className="px-6 py-3 w-1">
                     <input type="checkbox"
                            checked={selectedSongs.includes(song.id)}
                            onChange={() => handleSelect(song.id)}
+                           aria-label="Select song"
                     />
                 </td>
-                : ""}
+            }
         </tr>
     )
 }
@@ -145,6 +180,8 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
         }
     }
 
+    const [editing, setEditing] = useState(null);
+
     if (songs.length === 0) {
         return (
             <div>
@@ -159,6 +196,11 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
             <table className="min-w-full table-auto border-collapse border border-jet">
                 <thead>
                     <tr className="bg-delft-blue border-jet text-ghost-white-dark">
+                        {
+                            editSongs
+                                ? <th className="px-6 py-3 w-1"/>
+                                : ""
+                        }
                         <th className="px-6 py-3 w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("title")}>
@@ -215,6 +257,7 @@ export default function SongTable({ songs, editSongs, deleteSongs }) {
                                      editSongs={editSongs} deleteSongs={deleteSongs}
                                      selectedSongs={selectedSongs}
                                      handleSelect={handleSelect}
+                                     editing={editing} setEditing={setEditing}
                             />
                         ))}
                     </tbody>
