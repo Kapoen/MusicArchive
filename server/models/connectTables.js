@@ -57,22 +57,22 @@ export default {
         return songs.rows;
     },
 
-    deleteComposerLink: async (songID, composerID) => {
+    deleteComposerLink: async (songID) => {
         const result = await db.query(
             `DELETE FROM public.song_to_composer
-                    WHERE song_id = $1 AND composer_id = $2
+                    WHERE song_id = $1
                     RETURNING *;`,
-            [songID, composerID]
+            [songID]
         );
         return result.rows;
     },
 
-    deleteArrangerLink: async (songID, arrangerID) => {
+    deleteArrangerLink: async (songID) => {
         const result = await db.query(
             `DELETE FROM public.song_to_arranger
-                    WHERE song_id = $1 AND arranger_id = $2
+                    WHERE song_id = $1
                     RETURNING *;`,
-            [songID, arrangerID]
+            [songID]
         );
         return result.rows;
     }

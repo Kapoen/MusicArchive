@@ -3,6 +3,22 @@ import Composer from "../models/composer.js";
 
 const router = express.Router();
 
+router.post("/", async (req, res) => {
+    const { composerF, composerL } = req.body;
+
+    try {
+        const newComposer = await Composer.addComposer(composerF, composerL);
+        if (!newComposer) {
+            return res.status(500).json({ error: "Failed creating composer" });
+        }
+
+        return res.status(200).json(newComposer);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: "Unexpected error occurred creating composer" });
+    }
+});
+
 router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { composerF, composerL } = req.body;

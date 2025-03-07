@@ -3,6 +3,22 @@ import Arranger from "../models/arranger.js";
 
 const router = express.Router();
 
+router.post("/", async (req, res) => {
+    const { arrangerF, arrangerL } = req.body;
+
+    try {
+        const newArranger = await Arranger.addArranger(arrangerF, arrangerL);
+        if (!newArranger) {
+            return res.status(500).json({ error: "Failed creating arranger" });
+        }
+
+        return res.status(200).json(newArranger);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: "Unexpected error occurred creating arranger" });
+    }
+});
+
 router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { arrangerF, arrangerL } = req.body;
