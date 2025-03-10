@@ -38,6 +38,27 @@ router.put("/:id", async (req, res) => {
         console.log(err);
         return res.status(500).json({ error: "Unexpected error occurred when updating composer" })
     }
+});
+
+router.get("/search/:name", async (req, res) => {
+    const { name } = req.params;
+    if (!name) {
+        return res.status(404).json({ error: "Missing composer name" });
+    }
+
+    try {
+        const composerName = name.split(" ", 2);
+        const composerF = (composerName.length > 0) ? composerName[0] : null;
+        const composerL = (composerName.length > 1) ? composerName[1] : null;
+
+        const composerResult = await Composer.getComposerByName(composerF, composerL);
+        const composer = composerResult.length > 0 ? composerResult[0] : null;
+
+        return res.status(200).json(composer);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: "Unexpected error occurred while searching composer" });
+    }
 })
 
 export default router;

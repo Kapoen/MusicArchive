@@ -1,5 +1,6 @@
 import express from "express";
 import Arranger from "../models/arranger.js";
+import Composer from "../models/composer.js";
 
 const router = express.Router();
 
@@ -37,6 +38,27 @@ router.put("/:id", async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(500).json({ error: "Unexpected error occurred when arranger composer" })
+    }
+});
+
+router.get("/search/:name", async (req, res) => {
+    const { name } = req.params;
+    if (!name) {
+        return res.status(404).json({ error: "Missing arranger name" });
+    }
+
+    try {
+        const arrangerName = name.split(" ", 2);
+        const arrangerF = (arrangerName.length > 0) ? arrangerName[0] : null;
+        const arrangerL = (arrangerName.length > 1) ? arrangerName[1] : null;
+
+        const arrangerResult = await Arranger.getArrangerByName(arrangerF, arrangerL);
+        const arranger = arrangerResult.length > 0 ? arrangerResult[0] : null;
+
+        return res.status(200).json(arranger);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: "Unexpected error occurred while searching arranger" });
     }
 })
 

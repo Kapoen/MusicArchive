@@ -9,7 +9,7 @@ import { useSongs } from "../utils/SongContext.jsx";
 export default function EditSong() {
     const { songs } = useSongs();
 
-    const handleSave = async (songID, title, composerName, arrangerName, part) => {
+    async function saveComposer(composerName, songID) {
         if (composerName === "Not specified." || composerName === "") {
             composerName = null;
         }
@@ -18,25 +18,32 @@ export default function EditSong() {
         const composerF = (composer != null && composer.length > 0) ? composer[0] : null;
         const composerL = (composer != null && composer.length > 1) ? composer[1] : null;
         const composerResult = await api.get("song/" + songID + "/composer");
+        
         if (composerResult.data.length > 0) {
-            console.log(composerResult.data)
-            if (composerF === null && composerL === null) {
-                const deleteComposerLink = await api.delete("deleteComposerLink/" + songID);
-            } else {
-                const composerID = composerResult.data[0].composer_id;
-                const updateComposer = await api.put("composer/" + composerID, {composerF, composerL});
-            }
+            const deleteComposerLink = await api.delete("deleteComposerLink/" + songID);
         }
-        else {
-            if (composerF !== null) {
+
+        if (composerF !== null) {
+            let existingComposer = null;
+            if (composerName !== null) {
+                existingComposer = await api.get("/composer/search/" + composerName);
+            }
+
+            if (existingComposer === null) {
                 const createComposer = await api.post("composer", {composerF, composerL});
                 if (createComposer.status === 200) {
                     const composerID = createComposer.data[0].id;
                     const createComposerLink = await api.post("linkComposer", {songID, composerID});
                 }
             }
+            else {
+                const composerID = existingComposer.data.id;
+                const createComposerLink = await api.post("linkComposer", {songID, composerID})
+            }
         }
+    }
 
+    async function saveArranger(arrangerName, songID) {
         if (arrangerName === "Not specified." || arrangerName === "") {
             arrangerName = null;
         }
@@ -45,23 +52,34 @@ export default function EditSong() {
         const arrangerF = (arranger != null && arranger.length > 0) ? arranger[0] : null;
         const arrangerL = (arranger != null && arranger.length > 1) ? arranger[1] : null;
         const arrangerResult = await api.get("song/" + songID + "/arranger");
+
         if (arrangerResult.data.length > 0) {
-            if (arrangerF === null && arrangerL === null) {
-                const deleteArrangerLink = await api.delete("deleteArrangerLink/" + songID);
-            } else {
-                const arrangerID = arrangerResult.data[0].arranger_id;
-                const updateArranger = await api.put("arranger/" + arrangerID, {arrangerF, arrangerL});
-            }
+            const deleteArrangerLink = await api.delete("deleteArrangerLink/" + songID);
         }
-        else {
-            if (arrangerF !== null) {
+
+        if (arrangerF !== null) {
+            let existingArranger = null;
+            if (arrangerName !== null) {
+                existingArranger = await api.get("/composer/search/" + arrangerName);
+            }
+
+            if (existingArranger === null) {
                 const createArranger = await api.post("arranger", {arrangerF, arrangerL});
                 if (createArranger.status === 200) {
                     const arrangerID = createArranger.data[0].id;
                     const createArrangerLink = await api.post("linkArranger", {songID, arrangerID});
                 }
             }
+            else {
+                const arrangerID = existingArranger.data.id;
+                const createArrangerLink = await api.post("linkArranger", {songID, arrangerID})
+            }
         }
+    }
+
+    const handleSave = async (songID, title, composerName, arrangerName, part) => {
+        await saveComposer(composerName, songID);
+        await saveArranger(arrangerName, songID);
 
         const updateSong = await api.put("song/" + songID, {title, part});
     }
