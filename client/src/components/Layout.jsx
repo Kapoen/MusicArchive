@@ -3,8 +3,8 @@ import {NavLink} from "react-router-dom";
 
 export default function Layout({ children }) {
     return (
-        <main>
-            <nav className="bg-delft-blue p-4 mb-8">
+        <main className="h-screen">
+            <nav className="bg-delft-blue p-4 max-h-1/6">
                 <ul className="flex space-x-8 justify-center text-center text-xl">
                     <li>
                         <NavLink to="/" className={({ isActive }) => `
@@ -40,7 +40,9 @@ export default function Layout({ children }) {
                     </li>
                 </ul>
             </nav>
-            {children}
+            <div className="flex justify-center items-center h-5/6 pt-4">
+                {children}
+            </div>
         </main>
     );
 };

@@ -7,24 +7,13 @@ export default function AddSongForm() {
 
     const addSong = async (formData) => {
         const title = formData.get("title");
-        let composerF = formData.get("composerF");
-        if (composerF === "") {
-            composerF = null;
-        }
-        let composerL = formData.get("composerL");
-        if (composerL === "") {
-            composerL = null;
-        }
-        let arrangerF = formData.get("arrangerF");
-        if (arrangerF === "") {
-            arrangerF = null;
-        }
-        let arrangerL = formData.get("arrangerL");
-        if (arrangerL === "") {
-            arrangerL = null;
-        }
+        const composer = formData.get("composer");
+        const composerF = composer.split(" ").length > 0 ? composer.split(" ")[0] : null;
+        const composerL = composer.split(" ").length > 1 ? composer.split(" ", 2)[1] : null;
+        const arranger = formData.get("arranger");
+        const arrangerF = arranger.split(" ").length > 0 ? arranger.split(" ")[0] : null;
+        const arrangerL = arranger.split(" ").length > 1 ? arranger.split(" ", 2)[1] : null;
         const part = formData.get("part");
-
         const date = new Date().toISOString();
 
         const response = await api.post("addSong", {title, composerF, composerL, arrangerF, arrangerL, part, date});
@@ -34,21 +23,27 @@ export default function AddSongForm() {
     }
 
     return (
-        <div>
-            <form action={addSong}>
-                <label htmlFor="title">Title:</label>
-                <input type="text" id="title" name="title" required={true}/> <br />
-                <label htmlFor="composerF">Composer first name:</label>
-                <input type="text" id="composerF" name="composerF"/> <br />
-                <label htmlFor="composerL">Composer last name:</label>
-                <input type="text" id="composerL" name="composerL"/> <br />
-                <label htmlFor="arrangerF">Arranger first name:</label>
-                <input type="text" id="arrangerF" name="arrangerF"/> <br />
-                <label htmlFor="arrangerL">Arranger last name:</label>
-                <input type="text" id="arrangerL" name="arrangerL"/> <br />
-                <label htmlFor="part">Part:</label>
-                <input type="text" id="part" name="part" required={true}/> <br />
-                <button type="submit">Add song</button>
+        <div className="bg-delft-blue text-ghost-white-dark text-lg p-1 w-2/5 h-fit rounded-lg flex justify-center items-center">
+            <form action={addSong} className="space-y-2 w-full">
+                <div className="flex items-center w-full pl-4 pr-4 pt-4">
+                    <label htmlFor="title" className="w-1/4">Title:</label>
+                    <input type="text" id="title" name="title" required={true} className="text-jet rounded-lg flex-1 pl-1 pr-1"/>
+                </div>
+                <div className="flex items-center w-full pl-4 pr-4">
+                    <label htmlFor="composer" className="w-1/4">Composer:</label>
+                    <input type="text" id="composer" name="composer" className="text-jet rounded-lg flex-1 pl-1 pr-1"/>
+                </div>
+                <div className="flex items-center w-full pl-4 pr-4">
+                    <label htmlFor="arranger" className="w-1/4">Arranger:</label>
+                    <input type="text" id="arranger" name="arranger" className="text-jet rounded-lg flex-1 pl-1 pr-1"/>
+                </div>
+                <div className="flex items-center w-full pl-4 pr-4">
+                    <label htmlFor="part" className="w-1/4">Part:</label>
+                    <input type="text" id="part" name="part" required={true} className="text-jet rounded-lg flex-1 pl-1 pr-1"/>
+                </div>
+                <div className="flex justify-center items-center w-full p-4">
+                    <button type="submit" className="bg-vanilla text-jet rounded-lg w-24">Add song</button>
+                </div>
             </form>
         </div>
     )
