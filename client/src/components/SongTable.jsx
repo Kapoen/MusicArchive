@@ -67,7 +67,7 @@ function SongRow({ song, editSongs, editing, setEditing, handleSave, deleteSongs
     )
 }
 
-export default function SongTable({ songs, editSongs, handleSave, deleteSongs }) {
+export default function SongTable({ songs, userID, editSongs, handleSave, deleteSongs }) {
     const [filteredSongs, setFilteredSongs] = useState(songs);
     const [searchInput, setSearchInput] = useState("");
 
@@ -77,7 +77,9 @@ export default function SongTable({ songs, editSongs, handleSave, deleteSongs })
         }
         else {
             const fetchSongs = async () => {
-                const response = await api.get("song/search/" + searchInput);
+                const response = await api.get("song/search/" + searchInput, {
+                    params: { userID: userID }
+                });
                 const songsExpanded = response.data.map((song) => ({
                     id: song.id,
                     title: song.title,
@@ -165,6 +167,7 @@ export default function SongTable({ songs, editSongs, handleSave, deleteSongs })
         }
     }
 
+    const { fetchSongs } = useSongs();
     const handleSelect = (songID) => {
         setSelectedSongs((currSelected) =>
             currSelected.includes(songID)
@@ -185,6 +188,7 @@ export default function SongTable({ songs, editSongs, handleSave, deleteSongs })
                 );
             }
         }
+        fetchSongs();
     }
 
     const [editing, setEditing] = useState(null);

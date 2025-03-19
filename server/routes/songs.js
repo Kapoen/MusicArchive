@@ -4,8 +4,13 @@ import Song from "../models/song.js";
 const router = express.Router();
 
 router.get("/songs", async (req, res) => {
+    const { userID } = req.query;
+    if (!userID) {
+        return res.status(404).json({ error: "Missing user ID." });
+    }
+
     try {
-        const songs = await Song.getAllSongs();
+        const songs = await Song.getAllSongs(userID);
         return res.status(200).json(songs);
     } catch (err) {
         console.error(err);
@@ -33,12 +38,14 @@ router.get("/:songId", async (req, res) => {
 
 router.get("/search/:keyword", async (req, res) => {
     const { keyword } = req.params;
-    if (!keyword) {
-        return res.status(404).json({ error: "Missing keyword." });
+    const { userID } = req.query;
+
+    if (!keyword || !userID) {
+        return res.status(404).json({ error: "Missing keyword or user ID." });
     }
 
     try {
-        const song = await Song.searchSong(keyword);
+        const song = await Song.searchSong(keyword, userID);
         if (!song) {
             return res.status(404).json({ error: "Song not found." });
         }

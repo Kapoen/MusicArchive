@@ -13,7 +13,6 @@ const Register = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            console.log(values)
             await api.post("user", values);
             // We make a request to the /auth/token endpoint with the username and password
             const response = await api.get("/auth/token", {

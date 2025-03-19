@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
     // State to hold the authentication token
     const [token, setToken_] = useState(localStorage.getItem("token"));
     const [username, setUsername_] = useState(null);
+    const [userID, setUserID_] = useState(null);
 
     // Function to set the authentication token
     const setToken = (newToken) => {
@@ -17,10 +18,12 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (token) {
             localStorage.setItem("token", token);
-            setUsername_(JSON.parse(atob(token.split(".")[1])).id);
+            setUsername_(JSON.parse(atob(token.split(".")[1])).usr);
+            setUserID_(JSON.parse(atob(token.split(".")[1])).uid)
         } else {
             localStorage.removeItem("token");
             setUsername_(null);
+            setUserID_(null);
         }
     }, [token]);
 
@@ -30,8 +33,9 @@ export const AuthProvider = ({ children }) => {
             token,
             setToken,
             username,
+            userID
         }),
-        [token, username]
+        [token, username, userID]
     );
 
     // Provide the authentication context to the children components

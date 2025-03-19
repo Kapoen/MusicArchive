@@ -5,9 +5,11 @@ import api from "../api.js";
 import Layout from "../components/Layout.jsx";
 import SongTable from "../components/SongTable.jsx";
 import { useSongs } from "../utils/SongContext.jsx";
+import { useAuth } from "../utils/AuthContext.jsx";
 
 export default function EditSong() {
     const { songs } = useSongs();
+    const { userID } = useAuth();
 
     async function saveComposer(composerName, songID) {
         if (composerName === "Not specified." || composerName === "") {
@@ -86,7 +88,7 @@ export default function EditSong() {
 
     return (
         <Layout>
-            <SongTable songs={songs} editSongs={true} handleSave={handleSave} deleteSongs={false}/>
+            <SongTable songs={songs} userID={userID} editSongs={true} handleSave={handleSave} deleteSongs={false}/>
         </Layout>
     );
 };

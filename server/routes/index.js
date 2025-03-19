@@ -8,10 +8,14 @@ import ConnectTables from "../models/connectTables.js";
 const router = express.Router();
 
 router.post("/addSong", async (req, res) => {
-    const { title, composerF, composerL, arrangerF, arrangerL, part, date } = req.body;
+    const { title, composerF, composerL, arrangerF, arrangerL, part, date, userID } = req.body;
 
     try {
         const song = await Song.addSong(title, part, date);
+        const linkUser = await ConnectTables.connectUser(song[0].id, userID);
+        if (!linkUser) {
+            return res.status(500).json({ error: "Failed linking user with song." });
+        }
 
         if (composerF != null || composerL != null) {
             let composer = await Composer.getComposerByName(composerF, composerL);
@@ -59,6 +63,11 @@ router.delete("/deleteSong/:songID", async (req, res) => {
     }
 
     try {
+        const deleteUserLink = await ConnectTables.deleteUserLink(songID);
+        if (!deleteUserLink) {
+            return res.status(500).json({ error: "Failed deleting the link between user and song." });
+        }
+
         const composer = await ConnectTables.getSongComposer(songID);
         if (composer.length !== 0) {
             const composerID = composer[0].composer_id;

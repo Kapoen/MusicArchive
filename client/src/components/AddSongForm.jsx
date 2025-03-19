@@ -1,9 +1,11 @@
 import React from "react";
 import api from "../api.js";
 import {useSongs} from "../utils/SongContext.jsx";
+import {useAuth} from "../utils/AuthContext.jsx";
 
 export default function AddSongForm() {
     const { fetchSongs } = useSongs();
+    const { userID } = useAuth();
 
     const addSong = async (formData) => {
         const title = formData.get("title");
@@ -16,7 +18,7 @@ export default function AddSongForm() {
         const part = formData.get("part");
         const date = new Date().toISOString();
 
-        const response = await api.post("addSong", {title, composerF, composerL, arrangerF, arrangerL, part, date});
+        const response = await api.post("addSong", {title, composerF, composerL, arrangerF, arrangerL, part, date, userID});
         if (response.status === 201) {
             fetchSongs();
         }

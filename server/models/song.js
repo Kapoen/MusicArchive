@@ -1,8 +1,14 @@
 import db from "../database/index.js";
 
 export default {
-    getAllSongs: async () => {
-        const result = await db.query("SELECT * FROM public.song;");
+    getAllSongs: async (userID) => {
+        const result = await db.query(
+            `SELECT s.id, s.title, s.part, s.date_added
+                    FROM public.song s
+                    JOIN public.user_to_song uts ON s.id = uts.song_id
+                    WHERE uts.user_id = $1;`,
+            [userID]
+        );
         return result.rows;
     },
 
@@ -45,18 +51,18 @@ export default {
         return result.rows;
     },
 
-    searchSong: async (keywords) => {
-        const searchTerms = keywords.split(" ").map((word) => {
-            if (word !== ""){
-                return`%${word}%`
-            }
-        });
+    searchSong: async (keywords, userID) => {
+        const searchTerms = keywords.split(" ")
+            .filter((word) => word !== "" && word !== " ")
+            .map((word) => {
+                return `%${word}%`;
+            });
 
         const conditions = searchTerms.map((_, index) =>
-            `(s.title ILIKE $${index + 1} 
-                OR s.part ILIKE $${index + 1}
-                OR CONCAT(c.first_name, ' ', c.last_name) ILIKE $${index + 1}
-                OR CONCAT(a.first_name, ' ', a.last_name) ILIKE $${index + 1})`
+            `(s.title ILIKE $${index + 2} 
+                OR s.part ILIKE $${index + 2}
+                OR CONCAT(c.first_name, ' ', c.last_name) ILIKE $${index + 2}
+                OR CONCAT(a.first_name, ' ', a.last_name) ILIKE $${index + 2})`
         )
 
         const result = await db.query(
@@ -64,12 +70,13 @@ export default {
                 c.first_name c_first_name, c.last_name c_last_name,
                 a.first_name a_first_name, a.last_name a_last_name 
                 FROM public.song s
+                JOIN public.user_to_song uts ON s.id = uts.song_id
                 FULL JOIN public.song_to_composer stc ON s.id = stc.song_id
                 FULL JOIN public.composer c ON stc.composer_id = c.id
                 FULL JOIN public.song_to_arranger sta ON s.id = sta.song_id
                 FULL JOIN public.arranger a ON sta.arranger_id = a.id
-                WHERE ${conditions.join(" AND ")};`,
-                searchTerms
+                WHERE uts.user_id = $1 AND ${conditions.join(" AND ")};`,
+                [userID, ...searchTerms]
             );
 
         return result.rows;

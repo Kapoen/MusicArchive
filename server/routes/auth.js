@@ -20,8 +20,6 @@ router.get("/token", async (req, res) => {
         return res.status(404).json({ error: "User not found" });
     }
 
-    console.log(user)
-
     // Compare the hashed password with the provided password
     const isMatch = await bcrypt.compare(password, user[0].password);
 
@@ -31,7 +29,7 @@ router.get("/token", async (req, res) => {
 
     // If we reach this point, the user has been successfully authenticated
     // So construct and send a new JSON Web Token for the user
-    const token = jwt.sign({ id: user.username }, config.secret, {
+    const token = jwt.sign({ usr: user[0].username, uid: user[0].id }, config.secret, {
         algorithm: "HS256",
         allowInsecureKeySizes: true,
         expiresIn: 86400,

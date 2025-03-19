@@ -1,6 +1,7 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import api from "../api.js";
 import {message} from "antd";
+import {useAuth} from "./AuthContext.jsx";
 
 const SongContext  = createContext();
 
@@ -8,10 +9,13 @@ export const useSongs = () => useContext(SongContext);
 
 export const SongProvider = ({ children }) => {
     const [songs, setSongs] = useState([]);
+    const { userID } = useAuth();
 
     const fetchSongs = async () => {
         try {
-            const response = await api.get("/song/songs");
+            const response = await api.get("/song/songs", {
+                params: { userID: userID }
+            });
             const songList = response.data;
 
             const composersPromise = songList.map(async (song) => {
@@ -41,7 +45,7 @@ export const SongProvider = ({ children }) => {
 
     useEffect(() => {
         fetchSongs()
-    }, []);
+    }, [userID]);
 
     return (
         <SongContext.Provider value={{ songs, fetchSongs }}>

@@ -75,5 +75,25 @@ export default {
             [songID]
         );
         return result.rows;
+    },
+
+    connectUser: async (songID, userID) => {
+        const result = await db.query(
+            `INSERT INTO public.user_to_song (song_id, user_id)
+                    VALUES ($1, $2)
+                    RETURNING *;`,
+            [songID, userID]
+        );
+        return result.rows;
+    },
+
+    deleteUserLink: async (songID) => {
+        const result = await db.query(
+            `DELETE FROM public.user_to_song
+                    WHERE song_id = $1
+                    RETURNING *;`,
+            [songID]
+        );
+        return result.rows;
     }
 }
