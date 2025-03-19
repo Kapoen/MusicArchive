@@ -1,4 +1,5 @@
 export default {
+    secret: "secret",
     db: {
         host: 'localhost',
         database: 'Music_Archive',

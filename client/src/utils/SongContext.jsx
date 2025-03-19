@@ -2,7 +2,7 @@ import {createContext, useContext, useEffect, useState} from "react";
 import api from "../api.js";
 import {message} from "antd";
 
-const SongContext  = createContext({ songs: [] });
+const SongContext  = createContext();
 
 export const useSongs = () => useContext(SongContext);
 

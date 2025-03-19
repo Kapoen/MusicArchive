@@ -27,22 +27,24 @@ export default function AddSongForm() {
             <form action={addSong} className="space-y-2 w-full">
                 <div className="flex items-center w-full pl-4 pr-4 pt-4">
                     <label htmlFor="title" className="w-1/4">Title:</label>
-                    <input type="text" id="title" name="title" required={true} className="text-jet rounded-lg flex-1 pl-1 pr-1"/>
+                    <input type="text" id="title" name="title" required={true} className="text-jet rounded-md flex-1 pl-1 pr-1"/>
                 </div>
                 <div className="flex items-center w-full pl-4 pr-4">
                     <label htmlFor="composer" className="w-1/4">Composer:</label>
-                    <input type="text" id="composer" name="composer" className="text-jet rounded-lg flex-1 pl-1 pr-1"/>
+                    <input type="text" id="composer" name="composer" className="text-jet rounded-md flex-1 pl-1 pr-1"/>
                 </div>
                 <div className="flex items-center w-full pl-4 pr-4">
                     <label htmlFor="arranger" className="w-1/4">Arranger:</label>
-                    <input type="text" id="arranger" name="arranger" className="text-jet rounded-lg flex-1 pl-1 pr-1"/>
+                    <input type="text" id="arranger" name="arranger" className="text-jet rounded-md flex-1 pl-1 pr-1"/>
                 </div>
                 <div className="flex items-center w-full pl-4 pr-4">
                     <label htmlFor="part" className="w-1/4">Part:</label>
-                    <input type="text" id="part" name="part" required={true} className="text-jet rounded-lg flex-1 pl-1 pr-1"/>
+                    <input type="text" id="part" name="part" required={true} className="text-jet rounded-md flex-1 pl-1 pr-1"/>
                 </div>
                 <div className="flex justify-center items-center w-full p-4">
-                    <button type="submit" className="bg-vanilla text-jet rounded-lg w-24">Add song</button>
+                    <button type="submit" className="bg-vanilla text-jet rounded-lg w-24">
+                        Add song
+                    </button>
                 </div>
             </form>
         </div>

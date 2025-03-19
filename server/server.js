@@ -7,7 +7,9 @@ const app = express();
 import indexRouter from "./routes/index.js";
 import songRouter from "./routes/songs.js";
 import composerRouter from "./routes/composers.js";
-import arrangerRouter from "./routes/arrangers.js"
+import arrangerRouter from "./routes/arrangers.js";
+import authRouter from "./routes/auth.js";
+import userRouter from "./routes/users.js";
 
 const corsOptions = {
     // If you change the port number of the frontend, you need to change it here as well.
@@ -35,5 +37,7 @@ app.use("/", indexRouter);
 app.use("/song", songRouter);
 app.use("/composer", composerRouter);
 app.use("/arranger", arrangerRouter);
+app.use("/auth", authRouter);
+app.use("/user", userRouter);
 
 export default app;
