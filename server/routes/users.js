@@ -11,10 +11,8 @@ const router = express.Router();
 // Create a new user
 router.post("/", async (req, res) => {
     const { username, password, email } = req.body;
-    console.log(req.body);
 
     const user = await User.getUserByUsername(username);
-    console.log(user)
 
     if (user.length > 0) {
         return res.status(400).json({ error: "Username already exists" });

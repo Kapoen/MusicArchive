@@ -16,7 +16,7 @@ router.get("/token", async (req, res) => {
     const user = await User.getUserByUsername(username);
 
     // Check if user exists
-    if (!user) {
+    if (user.length === 0) {
         return res.status(404).json({ error: "User not found" });
     }
 
@@ -36,5 +36,26 @@ router.get("/token", async (req, res) => {
     });
     return res.status(200).json({ token });
 });
+
+router.get('/verify', authenticateJWT, (req, res) => {
+    res.status(200).json({ message: "User verified.", user: req.user });
+});
+
+function authenticateJWT(req, res, next) {
+    const token = req.header('Authorization')?.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).send('Token required');
+    }
+
+    jwt.verify(token, config.secret, (err, user) => {
+        if (err) {
+            return res.status(401).send('Invalid or expired token');
+        }
+
+        req.user = user;
+        next();
+    });
+}
 
 export default router;

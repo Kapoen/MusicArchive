@@ -13,6 +13,10 @@ export const SongProvider = ({ children }) => {
 
     const fetchSongs = async () => {
         try {
+            if (userID === null) {
+                return;
+            }
+
             const response = await api.get("/song/songs", {
                 params: { userID: userID }
             });

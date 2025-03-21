@@ -202,7 +202,7 @@ export default function SongTable({ songs, userID, editSongs, handleSave, delete
     }
 
     return(
-        <div className="shadow-md w-5/6 h-3/4 mx-auto">
+        <div className="shadow-md w-5/6 mx-auto">
             <input type="text" value={searchInput} onChange={handleSearch} />
             <table className="min-w-full table-auto border-collapse border border-jet">
                 <thead>

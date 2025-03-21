@@ -1,15 +1,48 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext.jsx";
+import api from "../api.js";
+import {useEffect, useState} from "react";
 
-export const ProtectedRoute = () => {
+export default function ProtectedRoute() {
     const { token } = useAuth();
+    const [load, setLoad] = useState(null);
 
-    // Check if the user is authenticated
     if (!token) {
-        // If not authenticated, redirect to the login page
-        return <Navigate to="/login" />;
+        return <Navigate to="/login"/>;
     }
 
-    // If authenticated, render the child routes
-    return <Outlet />;
+    useEffect(() => {
+        const verifyToken = async () => {
+            try {
+                const response =  await api.get("auth/verify", {
+                    headers: {
+                        "Authorization": `Bearer: ${token}`
+                    }
+                });
+
+                if (response.status === 200) {
+                    return setLoad(<Outlet />);
+                }
+
+                return <Navigate to="/login" />;
+            } catch (error) {
+                if (!error.response) {
+                    console.log("Network error: " + error);
+                    return setLoad(<Navigate to="/login"/>);
+                }
+
+                if (error.response.status === 401) {
+                    console.log("Token verification failed: Unauthorized");
+                    return setLoad(<Navigate to="/login"/>);
+                }
+
+                console.log("An error occurred: " + error.response.status);
+                return setLoad(<Navigate to="/login"/>);
+            }
+        };
+
+        verifyToken();
+    }, [token]);
+
+    return load;
 };
