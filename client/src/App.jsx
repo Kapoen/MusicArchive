@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import Profile from "./pages/Profile.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 import Home from "./pages/Home.jsx";
@@ -27,6 +28,7 @@ const App = () => {
                             <Route path="/addSong" element={<AddSong />} />
                             <Route path="/deleteSong" element={<DeleteSong />} />
                             <Route path="/editSong" element={<EditSong />} />
+                            <Route path="/profile" element={<Profile />} />
                         </Route>
                         <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
