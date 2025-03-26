@@ -8,7 +8,10 @@ export default {
       extend: {
           colors: {
               "delft-blue": "#2D3958",
-              "vanilla": "#FFF2A8",
+              "vanilla": {
+                  DEFAULT: "#FFF2A8",
+                  dark: "#FFEA75"
+              },
               "ghost-white": {
                   DEFAULT: "#F4F4F9",
                   dark: "#E5E5E5"

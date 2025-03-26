@@ -9,9 +9,19 @@ export default function ProfileDropdown() {
     }
 
     return (
-        <div className="absolute flex flex-col border-2 border-jet">
-            <button className="bg-vanilla w-18 h-18 text-jet text-lg border-b-2 border-jet" onClick={() => navigate("/profile")}>Settings</button>
-            <button className="bg-vanilla w-18 h-18 text-jet text-lg" onClick={logout}>Log out</button>
+        <div className="absolute flex flex-col border-2 border-t-0 border-jet rounded-b-lg bg-white shadow-lg">
+            <button
+                className="bg-vanilla w-full h-12 text-jet text-lg font-semibold hover:bg-vanilla-dark transition-all duration-200 ease-in-out border-b-2 border-jet rounded-t-lg"
+                onClick={() => navigate("/profile")}
+            >
+                Settings
+            </button>
+            <button
+                className="bg-vanilla w-full h-12 text-jet text-lg font-semibold rounded-b-lg hover:bg-vanilla-dark transition-all duration-200 ease-in-out"
+                onClick={logout}
+            >
+                Log out
+            </button>
         </div>
     );
 };

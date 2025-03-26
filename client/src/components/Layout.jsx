@@ -54,7 +54,7 @@ export default function Layout({ children }) {
                     </ul>
                 </nav>
                 <button className="bg-vanilla ml-auto" onClick={toggleDropdown}>
-                    <span className="ml-2 text-xl text-jet flex justify-center items-center">{username}<FiChevronDown className='ml-2'/> </span>
+                    <span className="pl-2 text-xl text-jet flex justify-center items-center border-2 border-jet">{username}<FiChevronDown className='ml-2'/> </span>
                     <div className="w-full">
                         {
                             dropdownOpen && <ProfileDropdown />
