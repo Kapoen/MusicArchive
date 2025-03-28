@@ -13,7 +13,7 @@ import userRouter from "./routes/users.js";
 
 const corsOptions = {
     // If you change the port number of the frontend, you need to change it here as well.
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5173/MusicArchive ",
 };
 
 // CORS provides a mechanism for securing cross-origin requests
