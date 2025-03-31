@@ -20,24 +20,20 @@ export const SongProvider = ({ children }) => {
             const response = await api.get("/song/songs", {
                 params: { userID: userID }
             });
-            const songList = response.data;
 
-            const composersPromise = songList.map(async (song) => {
-                const composerResponse = await api.get(`/song/${song.id}/composer`);
-                return composerResponse.data[0];
-            });
-            const composers = await Promise.all(composersPromise);
-
-            const arrangersPromise = songList.map(async (song) => {
-                const arrangerResponse = await api.get(`/song/${song.id}/arranger`);
-                return arrangerResponse.data[0] || "";
-            })
-            const arrangers = await Promise.all(arrangersPromise);
-
-            const songsExpanded = songList.map((song, index) => ({
-                ...song,
-                composer: composers[index],
-                arranger: arrangers[index]
+            const songsExpanded = response.data.map((song) => ({
+                id: song.id,
+                title: song.title,
+                composer: {
+                    first_name: song.c_first_name,
+                    last_name: song.c_last_name
+                },
+                arranger: {
+                    first_name: song.a_first_name,
+                    last_name: song.a_last_name
+                },
+                part: song.part,
+                date_added: song.date_added
             }))
 
             setSongs(songsExpanded)

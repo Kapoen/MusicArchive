@@ -3,9 +3,15 @@ import db from "../database/index.js";
 export default {
     getAllSongs: async (userID) => {
         const result = await db.query(
-            `SELECT s.id, s.title, s.part, s.date_added
+            `SELECT s.id, s.title, s.part, s.date_added,
+                    c.first_name c_first_name, c.last_name c_last_name,
+                    a.first_name a_first_name, a.last_name a_last_name
                     FROM public.song s
                     JOIN public.user_to_song uts ON s.id = uts.song_id
+                    FULL JOIN public.song_to_composer stc ON s.id = stc.song_id
+                    FULL JOIN public.composer c ON stc.composer_id = c.id
+                    FULL JOIN public.song_to_arranger sta ON s.id = sta.song_id
+                    FULL JOIN public.arranger a ON sta.arranger_id = a.id
                     WHERE uts.user_id = $1;`,
             [userID]
         );
