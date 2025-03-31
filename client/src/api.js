@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://kapoen.github.io/MusicArchive/",
+    baseURL: "https://musicarchive.onrender.com",
     headers: {
         "Content-Type": "application/json"
     }
