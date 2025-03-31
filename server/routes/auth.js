@@ -1,8 +1,9 @@
+import 'dotenv/config'; // Auto-loads .env into process.env
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
-import config from "../config.js";
+
 
 const router = express.Router();
 
@@ -48,7 +49,7 @@ function authenticateJWT(req, res, next) {
         return res.status(401).send('Token required');
     }
 
-    jwt.verify(token, config.secret, (err, user) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
             return res.status(401).send('Invalid or expired token');
         }

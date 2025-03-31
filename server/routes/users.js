@@ -1,12 +1,12 @@
 /**
  * Routes can (and usually should) be split up in different files, and can be nested using .use()
  */
+import 'dotenv/config'; // Auto-loads .env into process.env
 
 import express from "express";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import config from "../config.js";
 
 const router = express.Router();
 
@@ -73,7 +73,7 @@ router.put("/:userID", async (req, res) => {
            return res.status(500).json({ error: "Failed updating userinfo." });
        }
 
-       const token = jwt.sign({ usr: user[0].username, uid: user[0].id }, config.secret, {
+       const token = jwt.sign({ usr: user[0].username, uid: user[0].id }, process.env.JWT_SECRET, {
            algorithm: "HS256",
            allowInsecureKeySizes: true,
            expiresIn: 86400,

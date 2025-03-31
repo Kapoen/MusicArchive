@@ -1,3 +1,5 @@
+import 'dotenv/config'; // Auto-loads .env into process.env
+
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -13,7 +15,7 @@ import userRouter from "./routes/users.js";
 
 const corsOptions = {
     // If you change the port number of the frontend, you need to change it here as well.
-    origin: "http://localhost:5173/MusicArchive ",
+    origin: "https://kapoen.github.io/MusicArchive/",
 };
 
 // CORS provides a mechanism for securing cross-origin requests
