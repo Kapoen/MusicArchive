@@ -15,7 +15,7 @@ import userRouter from "./routes/users.js";
 
 const corsOptions = {
     // If you change the port number of the frontend, you need to change it here as well.
-    origin: "https://kapoen.github.io/MusicArchive/",
+    origin: "https://kapoen.github.io",
 };
 
 // CORS provides a mechanism for securing cross-origin requests
