@@ -21,16 +21,16 @@ const App = () => {
             <SongProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/" element={<ProtectedRoute />}>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/addSong" element={<AddSong />} />
-                            <Route path="/deleteSong" element={<DeleteSong />} />
-                            <Route path="/editSong" element={<EditSong />} />
-                            <Route path="/profile" element={<Profile />} />
+                        <Route path="/MusicArchive/login" element={<Login />} />
+                        <Route path="/MusicArchive/register" element={<Register />} />
+                        <Route path="/MusicArchive" element={<ProtectedRoute />}>
+                            <Route path="/MusicArchive" element={<Home />} />
+                            <Route path="/MusicArchive/addSong" element={<AddSong />} />
+                            <Route path="/MusicArchive/deleteSong" element={<DeleteSong />} />
+                            <Route path="/MusicArchive/editSong" element={<EditSong />} />
+                            <Route path="/MusicArchive/profile" element={<Profile />} />
                         </Route>
-                        <Route path="*" element={<Navigate to="/" replace />} />
+                        <Route path="*" element={<Navigate to="/MusicArchive" replace />} />
                     </Routes>
                 </BrowserRouter>
             </SongProvider>

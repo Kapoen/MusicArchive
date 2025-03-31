@@ -22,11 +22,11 @@ const Register = () => {
             // If the response does not contain a token, we display an error message
             if (!response.data.token) {
                 message.error("Auto login failed.");
-                return navigate("/login");
+                return navigate("/MusicArchive/login");
             }
 
             setToken(response.data.token); // Set the token in the AuthProvider
-            navigate("/"); // Redirect to the home page
+            navigate("/MusicArchive"); // Redirect to the home page
         } catch (err) {
             if (err.response && err.response.data && err.response.data.error) {
                 message.error(err.response.data.error);

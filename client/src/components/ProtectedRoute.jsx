@@ -8,7 +8,7 @@ export default function ProtectedRoute() {
     const [load, setLoad] = useState(null);
 
     if (!token) {
-        return <Navigate to="/login"/>;
+        return <Navigate to="/MusicArchive/login"/>;
     }
 
     useEffect(() => {
@@ -24,20 +24,20 @@ export default function ProtectedRoute() {
                     return setLoad(<Outlet />);
                 }
 
-                return <Navigate to="/login" />;
+                return <Navigate to="/MusicArchive/login" />;
             } catch (error) {
                 if (!error.response) {
                     console.log("Network error: " + error);
-                    return setLoad(<Navigate to="/login"/>);
+                    return setLoad(<Navigate to="/MusicArchive/login"/>);
                 }
 
                 if (error.response.status === 401) {
                     console.log("Token verification failed: Unauthorized");
-                    return setLoad(<Navigate to="/login"/>);
+                    return setLoad(<Navigate to="/MusicArchive/login"/>);
                 }
 
                 console.log("An error occurred: " + error.response.status);
-                return setLoad(<Navigate to="/login"/>);
+                return setLoad(<Navigate to="/MusicArchive/login"/>);
             }
         };
 

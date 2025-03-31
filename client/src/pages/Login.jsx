@@ -44,8 +44,8 @@ const Login = () => {
             </div>
             <div className=" bg-delft-blue w-1/4 h-fit flex flex-col items-center justify-evenly gap-y-4 rounded-lg drop-shadow-xl min-w-32">
                 <div className="w-full text-2xl font-bold">
-                    <button className="w-1/2 text-vanilla text-center" onClick={() => navigate("/login")}>Log in</button>
-                    <button className="w-1/2 text-ghost-white-dark text-center" onClick={() => navigate("/register")}>Register</button>
+                    <button className="w-1/2 text-vanilla text-center" onClick={() => navigate("/MusicArchive/login")}>Log in</button>
+                    <button className="w-1/2 text-ghost-white-dark text-center" onClick={() => navigate("/MusicArchive/register")}>Register</button>
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col items-start justify-center gap-y-4">
                     <input type="text" placeholder="Username" required={true}
