@@ -30,7 +30,7 @@ router.get("/token", async (req, res) => {
 
     // If we reach this point, the user has been successfully authenticated
     // So construct and send a new JSON Web Token for the user
-    const token = jwt.sign({ usr: user[0].username, uid: user[0].id }, config.secret, {
+    const token = jwt.sign({ usr: user[0].username, uid: user[0].id }, process.env.JWT_SECRET, {
         algorithm: "HS256",
         allowInsecureKeySizes: true,
         expiresIn: 86400,
