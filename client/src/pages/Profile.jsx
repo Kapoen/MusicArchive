@@ -5,6 +5,7 @@ import { useAuth } from "../utils/AuthContext.jsx";
 
 import {Avatar, message} from "antd";
 import {TiUserOutline} from "react-icons/ti";
+import { MdEdit } from "react-icons/md";
 import api from "../api.js";
 
 export default function Profile() {
@@ -70,7 +71,7 @@ export default function Profile() {
                         className={`text-xl ${editingUsername ? 'text-primary' : 'text-gray-500'} hover:text-primary transition duration-300`}
                         onClick={() => setEditingUsername((editing) => !editing)}
                     >
-                        {"\u270E"}
+                        <MdEdit />
                     </button>
                     <input
                         name="username"
@@ -86,7 +87,7 @@ export default function Profile() {
                         className={`text-xl ${editingEmail ? 'text-primary' : 'text-gray-500'} hover:text-primary transition duration-300`}
                         onClick={() => setEditingEmail((editing) => !editing)}
                     >
-                        {"\u270E"}
+                        <MdEdit />
                     </button>
                     <input
                         name="email"

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import api from "../api.js";
 import {formatDate, getNameString} from "../utils/utils.js";
 import {useSongs} from "../utils/SongContext.jsx";
+import { MdEdit, MdSave, MdCancel, MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 
 function SongRow({ song, editSongs, editing, setEditing, handleSave, deleteSongs, selectedSongs, handleSelect }) {
     const composerName = getNameString(song.composer);
@@ -23,7 +24,7 @@ function SongRow({ song, editSongs, editing, setEditing, handleSave, deleteSongs
                             aria-label="Edit song"
                             onClick={() => setEditing(song.id)}
                         >
-                            {"\u270E"}
+                            <MdEdit />
                         </button>
                     ) : (
                         <>
@@ -36,14 +37,14 @@ function SongRow({ song, editSongs, editing, setEditing, handleSave, deleteSongs
                                     fetchSongs();
                                 }}
                             >
-                                {"\u2714"}
+                                <MdSave />
                             </button>
                             <button
                                 className="w-1 pl-2"
                                 aria-label="Cancel"
                                 onClick={() => setEditing(null)}
                             >
-                                {"\u2716"}
+                                <MdCancel />
                             </button>
                         </>
                     )}
@@ -216,35 +217,35 @@ export default function SongTable({ songs, userID, editSongs, handleSave, delete
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("title")}>
                                 {sortConfig.column === "title" ?
-                                    (sortConfig.direction === "asc" ? "Title \u2b61" : "Title \u2b63") : "Title"}
+                                    (sortConfig.direction === "asc" ? <>"Title " <MdArrowDropUp /></> : <>"Title " <MdArrowDropDown /></>) : "Title"}
                             </div>
                         </th>
                         <th className="px-6 py-3 w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("composer")}>
                                 {sortConfig.column === "composer" ?
-                                    (sortConfig.direction === "asc" ? "Composer \u2b61" : "Composer \u2b63") : "Composer"}
+                                    (sortConfig.direction === "asc" ? <>"Composer " <MdArrowDropUp /></> : <>"Composer " <MdArrowDropDown /></>) : "Composer"}
                             </div>
                         </th>
                         <th className="px-6 py-3 w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("arranger")}>
                                 {sortConfig.column === "arranger" ?
-                                    (sortConfig.direction === "asc" ? "Arranger \u2b61" : "Arranger \u2b63") : "Arranger"}
+                                    (sortConfig.direction === "asc" ? <>"Arranger " <MdArrowDropUp /></> : <>"Arranger " <MdArrowDropDown /></>) : "Arranger"}
                             </div>
                         </th>
                         <th className="px-6 py-3 w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("part")}>
                                 {sortConfig.column === "part" ?
-                                    (sortConfig.direction === "asc" ? "Part \u2b61" : "Part \u2b63") : "Part"}
+                                    (sortConfig.direction === "asc" ? <>"Part " <MdArrowDropUp /></> : <>"Part " <MdArrowDropDown /></>) : "Part"}
                             </div>
                         </th>
                         <th className="px-6 py-3 w-36 text-left border-b border-jet">
                             <div className="hover:cursor-pointer"
                                  onClick={() => sortSongs("date_added")}>
                                 {sortConfig.column === "date_added" ?
-                                    (sortConfig.direction === "asc" ? "Date added \u2b61" : "Date added \u2b63") : "Date added"}
+                                    (sortConfig.direction === "asc" ? <>"Date added " <MdArrowDropUp /></> : <>"Date added " <MdArrowDropDown /></>) : "Date added"}
                             </div>
                         </th>
                         {
