@@ -214,38 +214,38 @@ export default function SongTable({ songs, userID, editSongs, handleSave, delete
                                 : ""
                         }
                         <th className="px-6 py-3 w-36 text-left border-b border-jet">
-                            <div className="hover:cursor-pointer"
+                            <div className="hover:cursor-pointer flex items-center gap-x-2"
                                  onClick={() => sortSongs("title")}>
                                 {sortConfig.column === "title" ?
-                                    (sortConfig.direction === "asc" ? <>"Title " <MdArrowDropUp /></> : <>"Title " <MdArrowDropDown /></>) : "Title"}
+                                    (sortConfig.direction === "asc" ? <>Title <MdArrowDropUp /></> : <>Title  <MdArrowDropDown /></>) : "Title"}
                             </div>
                         </th>
                         <th className="px-6 py-3 w-36 text-left border-b border-jet">
-                            <div className="hover:cursor-pointer"
+                            <div className="hover:cursor-pointer flex items-center gap-x-2"
                                  onClick={() => sortSongs("composer")}>
                                 {sortConfig.column === "composer" ?
-                                    (sortConfig.direction === "asc" ? <>"Composer " <MdArrowDropUp /></> : <>"Composer " <MdArrowDropDown /></>) : "Composer"}
+                                    (sortConfig.direction === "asc" ? <>Composer <MdArrowDropUp /></> : <>Composer <MdArrowDropDown /></>) : "Composer"}
                             </div>
                         </th>
                         <th className="px-6 py-3 w-36 text-left border-b border-jet">
-                            <div className="hover:cursor-pointer"
+                            <div className="hover:cursor-pointer flex items-center gap-x-2"
                                  onClick={() => sortSongs("arranger")}>
                                 {sortConfig.column === "arranger" ?
-                                    (sortConfig.direction === "asc" ? <>"Arranger " <MdArrowDropUp /></> : <>"Arranger " <MdArrowDropDown /></>) : "Arranger"}
+                                    (sortConfig.direction === "asc" ? <>Arranger <MdArrowDropUp /></> : <>Arranger <MdArrowDropDown /></>) : "Arranger"}
                             </div>
                         </th>
                         <th className="px-6 py-3 w-36 text-left border-b border-jet">
-                            <div className="hover:cursor-pointer"
+                            <div className="hover:cursor-pointer flex items-center gap-x-2"
                                  onClick={() => sortSongs("part")}>
                                 {sortConfig.column === "part" ?
-                                    (sortConfig.direction === "asc" ? <>"Part " <MdArrowDropUp /></> : <>"Part " <MdArrowDropDown /></>) : "Part"}
+                                    (sortConfig.direction === "asc" ? <>Part <MdArrowDropUp /></> : <>Part <MdArrowDropDown /></>) : "Part"}
                             </div>
                         </th>
                         <th className="px-6 py-3 w-36 text-left border-b border-jet">
-                            <div className="hover:cursor-pointer"
+                            <div className="hover:cursor-pointer flex items-center gap-x-2"
                                  onClick={() => sortSongs("date_added")}>
                                 {sortConfig.column === "date_added" ?
-                                    (sortConfig.direction === "asc" ? <>"Date added " <MdArrowDropUp /></> : <>"Date added " <MdArrowDropDown /></>) : "Date added"}
+                                    (sortConfig.direction === "asc" ? <>Date added <MdArrowDropUp /></> : <>Date added <MdArrowDropDown /></>) : "Date added"}
                             </div>
                         </th>
                         {
