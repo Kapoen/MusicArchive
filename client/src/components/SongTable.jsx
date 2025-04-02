@@ -128,7 +128,7 @@ export default function SongTable({ songs, userID, editSongs, handleSave, delete
                 }
 
                 if (timeA > timeB) {
-                    return direction === "desc" ? 1 : -1;
+                    return direction === "asc" ? 1 : -1;
                 }
 
                 return 0;
